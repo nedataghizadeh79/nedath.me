@@ -86,20 +86,21 @@ const spoken = `${intro.lead} ${resting.replace(/\.$/, '')}, ${rewrites.map((w) 
     font-family: var(--f-voice);
     font-size: var(--t-hero);
     font-weight: 350;
-    line-height: 1.3;
+    line-height: 1.42;
     letter-spacing: -0.03em;
     padding-top: var(--space-4);
   }
-  .edit { position: relative; display: inline-block; white-space: nowrap; }
+  /* A clear word space before the edited words, so the strike never touches "into". */
+  .edit { position: relative; display: inline-block; white-space: nowrap; margin-inline-start: 0.28em; }
   .old { position: relative; display: inline-block; }
   /* The strike: a blue-pencil line drawn through the old words. */
   .old::after {
     content: '';
     position: absolute;
-    left: -3%;
+    left: -1%;
     top: 54%;
     height: 0.07em;
-    width: 106%;
+    width: 103%;
     background: var(--pencil);
     border-radius: 2px;
     transform: rotate(-2deg) scaleX(0);
@@ -112,7 +113,7 @@ const spoken = `${intro.lead} ${resting.replace(/\.$/, '')}, ${rewrites.map((w) 
   .insert {
     position: absolute;
     left: 0;
-    bottom: 78%;
+    bottom: 74%;
     display: flex;
     align-items: flex-end;
     gap: 0.1em;
