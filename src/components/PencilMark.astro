@@ -1,0 +1,54 @@
+---
+/**
+ * A hand-drawn blue-pencil mark (proofreading style).
+ * By default it is drawn in as it scrolls into view. Add the class
+ * `pencil--load` to draw it once on page load (delay via `--delay`),
+ * or `pencil--hover` to let the parent draw it on hover.
+ * Always static when reduced motion is on.
+ */
+interface Props {
+  kind: 'underline' | 'circle' | 'arrow' | 'check';
+  class?: string;
+  style?: string;
+}
+
+const { kind, class: className, style } = Astro.props;
+
+/** Path data per mark, each in its own viewBox so it scales with its box. */
+const marks = {
+  underline: { viewBox: '0 0 300 16', d: 'M3 10 C 60 4, 110 13, 160 8 S 250 4, 297 9' },
+  circle: { viewBox: '0 0 200 80', d: 'M150 10 C 100 -2, 18 10, 10 40 C 4 66, 70 76, 120 72 C 176 68, 198 46, 186 26 C 176 12, 140 6, 92 9' },
+  arrow: { viewBox: '0 0 120 60', d: 'M6 52 C 24 18, 70 6, 108 18 M96 6 L 110 18 L 94 28' },
+  check: { viewBox: '0 0 30 26', d: 'M3 15 C 6 17, 9 20, 11 23 C 15 14, 20 7, 27 3' },
+};
+const m = marks[kind];
+---
+
+<svg class:list={['pencil', `pencil--${kind}`, className]} style={style} viewBox={m.viewBox} preserveAspectRatio="none" aria-hidden="true" focusable="false">
+  <path d={m.d} pathLength="1" />
+</svg>
+
+<style>
+  .pencil { overflow: visible; pointer-events: none; }
+  .pencil path {
+    fill: none;
+    stroke: var(--pencil);
+    /* No non-scaling-stroke: it would make the dash ignore pathLength. */
+    stroke-width: var(--pencil-width, 2.6);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .pencil--load path { animation: draw 800ms cubic-bezier(0.6, 0.1, 0.3, 1) var(--delay, 0s) both; }
+    @supports (animation-timeline: view()) {
+      .pencil:not(.pencil--hover, .pencil--load) path {
+        animation: draw linear both;
+        animation-timeline: view();
+        animation-range: entry 10% cover 35%;
+      }
+    }
+  }
+  @keyframes draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+</style>

@@ -1,5 +1,6 @@
 ---
 import SourceLinks from './SourceLinks.astro';
+import PencilMark from './PencilMark.astro';
 import type { Project } from '../data/work';
 
 interface Props {
@@ -13,17 +14,18 @@ const Heading = level;
 const href = p.caseStudy ? `/work/${p.slug}/` : undefined;
 ---
 
-<li class="row" data-roles={p.roles.join(' ')} data-type={p.type}>
+<li class="row" data-type={p.type}>
   <span class="code" aria-hidden="true">{p.code}</span>
   <div class="body">
     <Heading class="title">
       {href ? <a href={href}>{p.title}</a> : p.title}
+      <PencilMark kind="underline" class="pencil--hover title-mark" />
     </Heading>
     <p class="meta">{p.org} · <span class="tabular">{p.years}</span> · {p.type}</p>
     <p class="summary">{p.summary}</p>
     <SourceLinks sources={p.sources} id={`src-${p.slug}`} />
   </div>
-  {href && <a class="read" href={href} aria-hidden="true" tabindex="-1">Case study →</a>}
+  {href && <a class="read" href={href} aria-hidden="true" tabindex="-1">read the story →</a>}
 </li>
 
 <style>
@@ -31,18 +33,46 @@ const href = p.caseStudy ? `/work/${p.slug}/` : undefined;
     display: grid;
     grid-template-columns: 8.5rem minmax(0, 1fr) auto;
     gap: var(--space-2) var(--space-5);
-    padding-block: var(--space-5);
+    padding-block: var(--space-6);
     border-top: 1px solid var(--rule);
     align-items: baseline;
   }
   .code { font-family: var(--f-mono); font-size: var(--t-xs); color: var(--pencil); letter-spacing: 0.04em; }
   .body { display: grid; gap: var(--space-2); }
-  .title { font-family: var(--f-voice); font-size: var(--t-lg); font-weight: 450; line-height: 1.2; }
-  .title a { color: var(--ink); text-decoration: none; }
-  .title a:hover { text-decoration: underline; text-decoration-color: var(--pencil); }
+  .title {
+    position: relative;
+    justify-self: start;
+    font-family: var(--f-voice);
+    font-size: var(--t-xl);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  /* Highlighter sweep behind the title on hover, under the pencil underline. */
+  .title a {
+    color: var(--ink);
+    text-decoration: none;
+    background: linear-gradient(var(--mark), var(--mark)) 0 88% / 0% 0.42em no-repeat;
+    transition: background-size 450ms var(--ease);
+  }
+  .row:hover .title a, .row:focus-within .title a { background-size: 100% 0.42em; }
+  .title a:hover { text-decoration: none; }
+  /* On hover or focus, a blue-pencil underline is drawn under the title. */
+  .title :global(.title-mark) { position: absolute; left: 0; bottom: -0.3em; width: 100%; height: 0.35em; }
+  .title :global(.title-mark path) { stroke-dashoffset: 1; transition: stroke-dashoffset 500ms var(--ease); }
+  .row:hover .title :global(.title-mark path), .row:focus-within .title :global(.title-mark path) { stroke-dashoffset: 0; }
   .meta { font-family: var(--f-mono); font-size: var(--t-xs); color: var(--quiet); }
   .summary { max-width: 60ch; }
-  .read { font-size: var(--t-sm); font-weight: 600; white-space: nowrap; text-decoration: none; }
+  .read {
+    font-family: var(--f-hand);
+    font-size: 1.6rem;
+    line-height: 1;
+    white-space: nowrap;
+    text-decoration: none;
+    transform: rotate(-4deg);
+    transition: transform 300ms var(--ease);
+  }
+  .row:hover .read { transform: rotate(-4deg) translateX(0.4rem); }
   @media (max-width: 44rem) {
     .row { grid-template-columns: minmax(0, 1fr); }
     .read { display: none; }

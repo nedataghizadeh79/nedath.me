@@ -1,7 +1,7 @@
 /*
  * Design tokens and base styles.
- * Concept: an annotated manuscript (Register) with a working index (Catalogue).
- * One accent only: "blue pencil", the colour editors use for annotations.
+ * Concept: a manuscript under edit. One accent only: "blue pencil", the colour
+ * editors use for corrections, in strikes, circles, underlines and margin notes.
  */
 
 @layer reset, tokens, base, layout, components, utilities;
@@ -24,12 +24,17 @@
     --rule: color-mix(in srgb, var(--ink) 16%, transparent);
     --pencil: #2b50d8;
     --mark: #cfe3f2;
-    --placeholder: #9a5b00;
-    --placeholder-bg: #fbf0d9;
+    --placeholder: #2b50d8;
+    --placeholder-bg: #e2eafb;
+    --print: #fdfdfb;
+    /* Paper fibre: dark specks on light paper, light specks on dark. */
+    --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 
     --f-voice: 'Newsreader Variable', 'Iowan Old Style', Georgia, serif;
     --f-ui: 'Schibsted Grotesk Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
     --f-mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+    /* Handwriting for blue-pencil notes only. */
+    --f-hand: 'Nanum Pen Script', 'Bradley Hand', 'Segoe Print', cursive;
 
     /* Type scale (fluid, ~1.25 ratio) */
     --t-xs: 0.75rem;
@@ -39,6 +44,9 @@
     --t-lg: clamp(1.4rem, 1.2rem + 0.9vw, 1.85rem);
     --t-xl: clamp(1.9rem, 1.4rem + 2.2vw, 3rem);
     --t-xxl: clamp(2.2rem, 1.5rem + 3.4vw, 4rem);
+    --t-hero: clamp(2.6rem, 1.4rem + 5.4vw, 6rem);
+    /* Every inner page title uses this one size. */
+    --t-title: clamp(2.4rem, 1.4rem + 4vw, 4.6rem);
 
     --space-1: 0.25rem;
     --space-2: 0.5rem;
@@ -67,8 +75,10 @@
       --quiet: #a0a6ad;
       --pencil: #8fa8ff;
       --mark: #22385a;
-      --placeholder: #f0c36b;
-      --placeholder-bg: #2e2510;
+      --placeholder: #8fa8ff;
+      --placeholder-bg: #1b2744;
+      --print: #dcdfe2;
+      --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
       color-scheme: dark;
     }
   }
@@ -80,8 +90,10 @@
     --quiet: #a0a6ad;
     --pencil: #8fa8ff;
     --mark: #22385a;
-    --placeholder: #f0c36b;
-    --placeholder-bg: #2e2510;
+    --placeholder: #8fa8ff;
+    --placeholder-bg: #1b2744;
+    --print: #dcdfe2;
+    --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     color-scheme: dark;
   }
 }
@@ -89,7 +101,7 @@
 @layer base {
   html { -webkit-text-size-adjust: 100%; scroll-padding-top: 6rem; }
   body {
-    background: var(--paper);
+    background: var(--grain), var(--paper);
     color: var(--ink);
     font-family: var(--f-ui);
     font-size: var(--t-base);
@@ -100,7 +112,8 @@
   h4 { font-size: var(--t-base); font-weight: 600; }
   p, li { text-wrap: pretty; }
   a { color: var(--pencil); text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
-  a:hover { text-decoration-thickness: 2px; }
+  /* Links get a wavy blue-pencil underline on hover. */
+  a:hover { text-decoration-style: wavy; text-decoration-thickness: 1.5px; }
   :focus-visible { outline: 2px solid var(--pencil); outline-offset: 3px; border-radius: 2px; }
   ::selection { background: var(--mark); color: var(--ink); }
   mark { background: linear-gradient(transparent 60%, var(--mark) 60%); color: inherit; padding-inline: 0.1em; }
@@ -145,34 +158,15 @@
     color: var(--quiet);
   }
 
-  /* The dot mark: three dots, the site's small signature. */
-  .dots {
-    display: inline-block;
-    width: 1.1em;
-    height: 0.35em;
-    background: radial-gradient(circle, currentColor 0 1.5px, transparent 2px) 0 50% / 0.38em 0.35em repeat-x;
-    vertical-align: middle;
-    color: var(--pencil);
-  }
-
-  /* Margin note: a blue-pencil annotation beside the text. */
+  /* Margin note: a handwritten blue-pencil annotation beside the text. */
   .note {
-    font-family: var(--f-mono);
-    font-size: var(--t-sm);
-    line-height: 1.55;
-    color: var(--quiet);
-    border-left: 1.5px solid var(--pencil);
-    padding-left: var(--space-3);
+    font-family: var(--f-hand);
+    font-size: 1.55rem;
+    line-height: 1.05;
+    color: var(--pencil);
+    transform: rotate(-1.5deg);
+    transform-origin: left top;
   }
-  .note b { display: block; color: var(--pencil); font-weight: 500; font-size: var(--t-xs); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: var(--space-1); }
-
-  /*
-   * Notes and variants written for one reading show only in that reading.
-   * <html data-read> is set before first paint, so there is no flash.
-   */
-  html[data-read='frontend'] [data-for]:not([data-for~='frontend']),
-  html[data-read='people'] [data-for]:not([data-for~='people']),
-  html[data-read='design'] [data-for]:not([data-for~='design']) { display: none !important; }
 
   .button {
     display: inline-flex;

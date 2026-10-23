@@ -1,33 +1,31 @@
 ---
 import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
 
 /** Colour tokens shown on this page, read from the same names the CSS uses. */
 const tokens = [
   { name: '--paper', role: 'Background' },
   { name: '--ink', role: 'Text' },
   { name: '--quiet', role: 'Secondary text' },
-  { name: '--pencil', role: 'The one accent: links, notes, the current reading' },
+  { name: '--pencil', role: 'The one accent: links, edits, notes' },
   { name: '--mark', role: 'Highlighter' },
 ];
 
 const faces = [
   { family: 'var(--f-voice)', name: 'Newsreader', use: 'Headings and statements' },
   { family: 'var(--f-ui)', name: 'Schibsted Grotesk', use: 'Interface and body text' },
-  { family: 'var(--f-mono)', name: 'IBM Plex Mono', use: 'Labels, dates, margin notes' },
+  { family: 'var(--f-mono)', name: 'IBM Plex Mono', use: 'Labels and dates' },
+  { family: 'var(--f-hand)', name: 'Nanum Pen Script', use: 'Handwritten blue-pencil notes' },
 ];
 ---
 
 <Base title="Colophon" description="How this site is built: stack, design standards, accessibility and privacy.">
-  <header class="intro">
-    <p class="label">Colophon</p>
-    <h1>How this site is built</h1>
-    <p>The site reads like an annotated manuscript with a working index. The “Read as” switch changes what is emphasised for different readers, without hiding anything important.</p>
-  </header>
+  <PageHeader label="Colophon" title="How this site is built" lead="A manuscript under edit. Blue pencil, the colour editors use for corrections, marks what matters: strikes, circles, underlines and handwritten notes." />
 
   <section class="section grid" aria-labelledby="stack">
     <h2 id="stack">Stack</h2>
     <ul class="list">
-      <li><strong>Astro and TypeScript (strict).</strong> Static pages, no client framework. The only scripts are the reading switch, the theme toggle, the email copy button and the Work filters.</li>
+      <li><strong>Astro and TypeScript (strict).</strong> Static pages, no client framework. The only scripts are the live edit on the home page, the theme toggle, the email copy button and the Work filters.</li>
       <li><strong>Plain CSS</strong> with cascade layers and custom properties. No CSS framework.</li>
       <li><strong>Self-hosted fonts</strong> through Fontsource, so no requests go to third-party font servers.</li>
       <li><strong>Content as typed data.</strong> Projects, experience and skills live in TypeScript files; the pages and the CV are generated from them.</li>
@@ -55,8 +53,8 @@ const faces = [
     <h2 id="a11y">Accessibility</h2>
     <ul class="list">
       <li>Built to WCAG 2.2 AA: colour contrast checked in both themes, visible keyboard focus, a skip link and semantic headings.</li>
-      <li>The reading switch and filters are real buttons with pressed states, and changes are announced to screen readers.</li>
-      <li>Motion is limited to short transitions and turns off when the system asks for reduced motion.</li>
+      <li>The filters are real buttons with pressed states, and changes are announced to screen readers. The live edit has a pause button, and screen readers hear the full sentence instead.</li>
+      <li>Motion is limited to the edit and pencil marks, and turns off when the system asks for reduced motion.</li>
       <li>Link previews are text, available to keyboard and screen-reader users as descriptions.</li>
     </ul>
   </section>
@@ -65,16 +63,13 @@ const faces = [
     <h2 id="privacy">Privacy</h2>
     <ul class="list">
       <li>No cookies, no analytics, no tracking.</li>
-      <li>Your chosen reading and theme are stored only in your own browser.</li>
+      <li>Your chosen theme is stored only in your own browser.</li>
       <li>The hosting provider keeps standard server logs.</li>
     </ul>
   </section>
 </Base>
 
 <style>
-  .intro { padding-block: var(--space-8) var(--space-6); display: grid; gap: var(--space-3); max-width: 60ch; }
-  .intro h1 { font-size: var(--t-xxl); }
-  .intro p:last-child { color: var(--quiet); }
   .grid { display: grid; grid-template-columns: 14rem minmax(0, 1fr); gap: var(--space-6); }
   h2 { font-size: var(--t-lg); }
   .list { display: grid; gap: var(--space-3); padding-left: 1.1em; max-width: var(--measure); }

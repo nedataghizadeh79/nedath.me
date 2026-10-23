@@ -1,0 +1,74 @@
+---
+/**
+ * A photo shown as a print taped onto the manuscript: white border,
+ * a slight tilt and a strip of tape. Black and white by default; with
+ * `develop`, the colour comes up on hover or focus, like a print developing.
+ */
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  /** Colour version faded in when the print develops (for black-and-white originals). */
+  tone?: ImageMetadata;
+  /** Tilt in degrees; small values look natural (−3 to 3). */
+  tilt?: number;
+  develop?: boolean;
+  /** Handwritten caption on the print's bottom border. */
+  caption?: string;
+  sizes: string;
+  loading?: 'eager' | 'lazy';
+  class?: string;
+}
+
+const { src, alt, tone, tilt = 2, develop = false, caption, sizes, loading = 'lazy', class: className } = Astro.props;
+---
+
+<figure class:list={['print', { develop }, className]} style={`--tilt: ${tilt}deg`}>
+  <span class="tape" aria-hidden="true"></span>
+  <div class="photo">
+    <Image class="base" src={src} alt={alt} widths={[320, 480, 640, 800]} sizes={sizes} loading={loading} fetchpriority={loading === 'eager' ? 'high' : undefined} />
+    {tone && <Image class="tone" src={tone} alt="" widths={[320, 480, 640, 800]} sizes={sizes} loading="lazy" />}
+  </div>
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<style>
+  .print {
+    position: relative;
+    margin: 0;
+    padding: 0.7rem 0.7rem 0.5rem;
+    background: var(--print);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.08), 0 14px 32px -12px rgb(0 0 0 / 0.28);
+    transform: rotate(var(--tilt));
+    transition: transform 400ms var(--ease);
+  }
+  .photo { position: relative; }
+  .print img { aspect-ratio: 4 / 5; object-fit: cover; width: 100%; filter: grayscale(1) contrast(1.06); transition: filter 600ms var(--ease), opacity 700ms var(--ease); }
+  /* The tinted version sits on top, hidden until the print develops. */
+  .print .tone { position: absolute; inset: 0; height: 100%; opacity: 0; filter: none; }
+  .develop:hover .base, .develop:focus-within .base { filter: none; }
+  .develop:hover .tone, .develop:focus-within .tone { opacity: 1; }
+  .develop:hover { transform: rotate(0deg) scale(1.02); }
+  figcaption {
+    font-family: var(--f-hand);
+    font-size: 1.5rem;
+    line-height: 1;
+    color: #2b50d8;
+    padding: 0.5rem 0.2rem 0.1rem;
+    min-height: 2.1rem;
+  }
+  .print:not(:has(figcaption)) { padding-bottom: 2.6rem; }
+  .tape {
+    position: absolute;
+    top: -0.9rem;
+    left: 50%;
+    width: 42%;
+    max-width: 6.5rem;
+    height: 1.7rem;
+    background: color-mix(in srgb, var(--mark) 75%, transparent);
+    transform: translateX(-50%) rotate(calc(var(--tilt) * -2));
+    z-index: 1;
+  }
+</style>

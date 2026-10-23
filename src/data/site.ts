@@ -1,20 +1,7 @@
 /**
- * Site-wide facts: identity, contact links and the three readings.
+ * Site-wide facts: identity, contact links and the home-page introduction.
  * Every page reads from here, so a change in one place updates the whole site.
  */
-
-/** A reading of the site, tuned for one kind of reader. */
-export type Register = 'frontend' | 'people' | 'design';
-
-/** Label and short description for each reading, in switch order. */
-export const registers: { id: Register; label: string; long: string }[] = [
-  { id: 'frontend', label: 'Frontend', long: 'frontend development' },
-  { id: 'people', label: 'People', long: 'people and communication' },
-  { id: 'design', label: 'UI/UX', long: 'UI and UX design' },
-];
-
-/** The reading shown when the visitor has not chosen one. */
-export const defaultRegister: Register = 'frontend';
 
 export const person = {
   name: 'Neda Taghizade Serajeh',
@@ -47,33 +34,21 @@ export const cvFile = {
   label: 'CV (PDF)',
 };
 
-/** The opening statement and three proofs for each reading. */
-export const abstract: Record<Register, { statement: string; proofs: string[] }> = {
-  frontend: {
-    statement:
-      'I build React and TypeScript interfaces, from an open-source widget library for research apps to the seller panel of Iran’s largest online retailer.',
-    proofs: [
-      '33 merged pull requests in terminology-service-suite, a widget library with 11k+ npm downloads a year',
-      'Migrated Digikala’s Seller Center pages from Twig to reusable React and TypeScript components',
-      'Separated data from presentation across the library’s widgets, so apps that already have the data can reuse the UI',
-    ],
-  },
-  people: {
-    statement:
-      'I turn what clients and colleagues need into clear user stories, workshops and events that people can act on.',
-    proofs: [
-      'Turned client requirements into user stories and helped deliver IT workshops at Serity',
-      'Directed the Computer Engineering student association at Sharif University of Technology',
-      'Coordinated and presented at Shenasa, an event on AI, neuroscience and cognitive science',
-    ],
-  },
-  design: {
-    statement:
-      'I design in Figma and build what I design, so the screen people use is the one that was tested.',
-    proofs: [
-      'Designed the DALL-E artist-commission platform for desktop and mobile, then built it in React with my colleagues',
-      'Designed and implemented smart-home screens at AYOT',
-      'First author of a CHI 2024 workshop paper on LLMs in HCI research',
-    ],
-  },
+/**
+ * The home-page statement. The last words are edited live in blue pencil:
+ * `edits[0]` is the resting text, the others are written over it in turn.
+ */
+export const intro = {
+  lead: 'I turn what people need into',
+  /** The word in `lead` circled in blue pencil on load. */
+  circled: 'people',
+  edits: ['React code.', 'clear user stories.', 'tested screens.'],
+  /** Handwritten margin note beside the statement. */
+  note: 'designs it, builds it, explains it',
+  proofs: [
+    '33 merged pull requests in terminology-service-suite, an open-source widget library with 11k+ npm downloads a year',
+    'Migrated Digikala’s Seller Center pages from Twig to reusable React and TypeScript components',
+    'Designed the DALL-E artist-commission platform in Figma, then built it in React with my colleagues',
+    'Turned client requirements into user stories and helped run IT workshops at Serity',
+  ],
 };

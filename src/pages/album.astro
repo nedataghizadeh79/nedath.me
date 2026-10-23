@@ -1,0 +1,84 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Print from '../components/Print.astro';
+import PencilMark from '../components/PencilMark.astro';
+import { Image } from 'astro:assets';
+import { frames } from '../data/album';
+
+/** Frame number in contact-sheet style: 01, 02, … */
+const num = (i: number) => String(i + 1).padStart(2, '0');
+/** A loose, hand-placed look: each print gets its own small tilt. */
+const tilts = [-2.2, 1.6, -1.1, 2.4, -1.8, 1.2];
+---
+
+<Base title="Album" description="A few portraits of Neda Taghizade Serajeh, laid out like prints on an editor’s desk.">
+  <PageHeader label="Album" title="Prints on the desk" lead="A few portraits. Hover to bring the colour back; select one to see it larger." />
+
+  <ol role="list" class="frames">
+    {frames.map((f, i) => (
+      <li class="frame">
+        <Print src={f.src} tone={f.tone} alt="" tilt={tilts[i % tilts.length]} caption={f.note ? `${num(i)} · ${f.note}` : num(i)} sizes="(min-width: 60rem) 16rem, 45vw" loading={i < 2 ? 'eager' : 'lazy'} />
+        {f.note && <PencilMark kind="circle" class="chosen" />}
+        <button type="button" class="open" data-frame={i} aria-label={`Open photo ${num(i)}: ${f.alt}`}></button>
+      </li>
+    ))}
+  </ol>
+
+  <dialog class="viewer" data-viewer aria-label="Photo viewer">
+    <div class="viewer-panel">
+    <form method="dialog" class="viewer-bar">
+      <span class="label" data-viewer-label></span>
+      <button class="viewer-close" aria-label="Close">Close ✕</button>
+    </form>
+    {frames.map((f, i) => (
+      <Image class="viewer-img" data-viewer-img={i} src={f.tone ?? f.src} alt={f.alt} widths={[800, 1000]} sizes="min(90vw, 40rem)" loading="lazy" hidden />
+    ))}
+    <div class="viewer-nav">
+      <button type="button" data-step="-1">← Previous</button>
+      <button type="button" data-step="1">Next →</button>
+    </div>
+    </div>
+  </dialog>
+</Base>
+
+<script>
+  import { startViewer } from '../scripts/viewer';
+  startViewer();
+</script>
+
+<style>
+  .frames { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-7) var(--space-6); padding-block: var(--space-4) var(--space-6); }
+  .frame { position: relative; }
+  .frame :global(.print) { transition: transform 400ms var(--ease); }
+  /* Hover or focus develops the print: colour comes back and it straightens. */
+  .frame:hover :global(.print), .frame:focus-within :global(.print) { transform: rotate(0deg) scale(1.03); }
+  .frame:hover :global(.print .base), .frame:focus-within :global(.print .base) { filter: none; }
+  .frame:hover :global(.print .tone), .frame:focus-within :global(.print .tone) { opacity: 1; }
+  .open { position: absolute; inset: 0; z-index: 2; border: 0; background: none; cursor: zoom-in; }
+  .open:focus-visible { outline-offset: 6px; }
+  /* The editor's pick: circled in blue pencil. */
+  .frame :global(.chosen) { position: absolute; left: -12%; top: -6%; width: 124%; height: 112%; z-index: 1; --pencil-width: 0.9; }
+
+  .viewer {
+    width: min(92vw, 44rem);
+    max-height: 92vh;
+    padding: 0;
+    border: 0;
+    background: var(--grain), var(--paper);
+    color: var(--ink);
+    box-shadow: 0 20px 60px rgb(0 0 0 / 0.35);
+  }
+  .viewer-panel { padding: var(--space-4); }
+  .viewer::backdrop { background: rgb(10 11 13 / 0.78); }
+  .viewer-bar, .viewer-nav { display: flex; justify-content: space-between; align-items: center; gap: var(--space-3); }
+  .viewer-bar { margin-bottom: var(--space-3); }
+  .viewer-nav { margin-top: var(--space-3); }
+  .viewer :global(.viewer-img) { width: 100%; max-height: 72vh; object-fit: contain; }
+  .viewer button { border: 1px solid var(--rule); background: none; padding: var(--space-2) var(--space-3); cursor: pointer; font-size: var(--t-sm); }
+  .viewer button:hover { border-color: var(--ink); }
+
+  @media (max-width: 52rem) {
+    .frames { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-7) var(--space-5); }
+  }
+</style>

@@ -1,5 +1,3 @@
-import type { Register } from './site';
-
 /** One job or volunteer role. */
 export interface Role {
   org: string;
@@ -8,7 +6,6 @@ export interface Role {
   place: string;
   /** Display range, e.g. "Dec 2025 – now". */
   dates: string;
-  roles: Register[];
   points: string[];
   /** Slug of the related project in work.ts, if any. */
   project?: string;
@@ -21,7 +18,6 @@ export const experience: Role[] = [
     title: 'Front-end Developer (Student Research Assistant)',
     place: 'Bonn, Germany',
     dates: 'Dec 2025 – now',
-    roles: ['frontend', 'design'],
     project: 'terminology-widgets',
     points: [
       'Developed the terminology-mapping widgets from first version to full feature set: both directions, filters, detail views.',
@@ -37,7 +33,6 @@ export const experience: Role[] = [
     title: 'Junior Technical Consultant (Working Student)',
     place: 'Bonn, Germany',
     dates: 'Apr 2025 – Aug 2025',
-    roles: ['people'],
     project: 'serity-requirements',
     points: [
       'Supported ServiceNow implementations in security operations and compliance for international enterprise clients.',
@@ -51,7 +46,6 @@ export const experience: Role[] = [
     title: 'Front-end Developer',
     place: 'Tehran, Iran',
     dates: 'Nov 2022 – May 2023',
-    roles: ['frontend'],
     project: 'seller-center-migration',
     points: [
       'Worked on the Seller Center of Iran’s largest online retailer (40M+ monthly users).',
@@ -64,7 +58,6 @@ export const experience: Role[] = [
     title: 'Software Engineer Intern and UI/UX Designer',
     place: 'Tehran, Iran',
     dates: 'Mar 2022 – Sep 2022',
-    roles: ['design', 'frontend'],
     project: 'dall-e-platform',
     points: [
       'Designed UI screens in Figma and implemented them in React for AYOT’s smart-home platform.',
@@ -79,7 +72,6 @@ export const volunteering: Role[] = [
     title: 'Director',
     place: 'Tehran, Iran',
     dates: 'Nov 2021 –',
-    roles: ['people'],
     points: ['Coordinator and presenter at Shenasa, a scientific event on AI, neuroscience and cognitive science.'],
   },
   {
@@ -87,7 +79,6 @@ export const volunteering: Role[] = [
     title: 'Staff',
     place: 'Tehran, Iran',
     dates: 'Dec 2019 – Jan 2020',
-    roles: ['people'],
     points: ['Staff at the 43rd International Collegiate Programming Contest, 20th Asian Regional Contest in Iran.'],
   },
 ];
@@ -144,25 +135,24 @@ export const publications: Publication[] = [
 /** A skill and where it was used, so every claim points to evidence. */
 export interface Skill {
   name: string;
-  roles: Register[];
   /** Where it was used, in a few words. */
   evidence: string;
 }
 
 export const skills: Skill[] = [
-  { name: 'React', roles: ['frontend'], evidence: 'ZB MED widgets, Digikala Seller Center, AYOT' },
-  { name: 'TypeScript', roles: ['frontend'], evidence: 'ZB MED widgets, Digikala Seller Center' },
-  { name: 'JavaScript, HTML, CSS', roles: ['frontend'], evidence: 'Every project; plain JS package at ZB MED' },
-  { name: 'Storybook', roles: ['frontend'], evidence: 'Widget docs and shareable stories at ZB MED' },
-  { name: 'Elastic UI', roles: ['frontend', 'design'], evidence: 'Component library behind the ZB MED widgets' },
-  { name: 'Next.js', roles: ['frontend'], evidence: 'Redesigned the library’s demo app' },
-  { name: 'REST APIs', roles: ['frontend'], evidence: 'Terminology and mapping APIs in the widgets' },
-  { name: 'Figma', roles: ['design'], evidence: 'DALL-E platform, AYOT smart-home screens' },
-  { name: 'User stories and requirements', roles: ['people', 'design'], evidence: 'Client work at Serity' },
-  { name: 'Workshops and presenting', roles: ['people'], evidence: 'Serity client workshops, Shenasa' },
-  { name: 'ServiceNow', roles: ['people'], evidence: 'Certified System Administrator; Serity projects' },
-  { name: 'Python', roles: ['frontend'], evidence: 'NLP course projects and research' },
-  { name: 'Git and code review', roles: ['frontend', 'people'], evidence: 'Branches and reviewed pull requests at ZB MED' },
+  { name: 'React', evidence: 'ZB MED widgets, Digikala Seller Center, AYOT' },
+  { name: 'TypeScript', evidence: 'ZB MED widgets, Digikala Seller Center' },
+  { name: 'JavaScript, HTML, CSS', evidence: 'Every project; plain JS package at ZB MED' },
+  { name: 'Storybook', evidence: 'Widget docs and shareable stories at ZB MED' },
+  { name: 'Elastic UI', evidence: 'Component library behind the ZB MED widgets' },
+  { name: 'Next.js', evidence: 'Redesigned the library’s demo app' },
+  { name: 'REST APIs', evidence: 'Terminology and mapping APIs in the widgets' },
+  { name: 'Figma', evidence: 'DALL-E platform, AYOT smart-home screens' },
+  { name: 'User stories and requirements', evidence: 'Client work at Serity' },
+  { name: 'Workshops and presenting', evidence: 'Serity client workshops, Shenasa' },
+  { name: 'ServiceNow', evidence: 'Certified System Administrator; Serity projects' },
+  { name: 'Python', evidence: 'NLP course projects and research' },
+  { name: 'Git and code review', evidence: 'Branches and reviewed pull requests at ZB MED' },
 ];
 
 /** Skills exactly as grouped on the CV. */

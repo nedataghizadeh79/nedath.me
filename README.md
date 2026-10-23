@@ -2,13 +2,13 @@
 
 Personal website of Neda Taghizade Serajeh: frontend developer with a UI/UX and people side.
 
-The site reads like an annotated manuscript with a working index. A **Read as** switch (Frontend · People · UI/UX) changes what each page emphasises for different readers, without hiding the rest.
+The site looks like a manuscript under edit: blue pencil, the colour editors use for corrections, strikes and rewrites the home-page statement and marks what matters across the site.
 
 ## Stack
 
 - [Astro](https://astro.build) with TypeScript (strict), fully static
 - Plain CSS with cascade layers and design tokens (`src/styles/global.css`)
-- Self-hosted fonts via Fontsource: Newsreader, Schibsted Grotesk, IBM Plex Mono
+- Self-hosted fonts via Fontsource: Newsreader, Schibsted Grotesk, IBM Plex Mono, Nanum Pen Script
 - No client framework, no cookies, no analytics
 
 ## Commands
@@ -27,7 +27,7 @@ The site reads like an annotated manuscript with a working index. A **Read as** 
 
 All content is typed data, so pages and the CV stay in sync:
 
-- `src/data/site.ts`: name, contact links, the three readings and the home-page statements
+- `src/data/site.ts`: name, contact links and the home-page statement with its live edits
 - `src/data/work.ts`: projects, sources and case studies
 - `src/data/profile.ts`: experience, education, publications, skills, languages
 

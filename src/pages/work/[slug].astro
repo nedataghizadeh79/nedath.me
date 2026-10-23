@@ -2,7 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import SourceLinks from '../../components/SourceLinks.astro';
 import Placeholder from '../../components/Placeholder.astro';
-import { registers } from '../../data/site';
+import PageHeader from '../../components/PageHeader.astro';
 import { caseStudies, type Project } from '../../data/work';
 
 export function getStaticPaths() {
@@ -19,23 +19,18 @@ interface Props {
 
 const { project: p, next } = Astro.props;
 const cs = p.caseStudy!;
-const roleLabels = p.roles.map((id) => registers.find((r) => r.id === id)?.label).join(', ');
 ---
 
 <Base title={p.title} description={p.summary}>
   <article>
-    <header class="head">
-      <p class="label"><span class="code">{p.code}</span> · Case study</p>
-      <h1>{p.title}</h1>
-      <p class="summary">{p.summary}</p>
+    <PageHeader label={`${p.code} · Case study`} title={p.title} lead={p.summary}>
       <dl class="facts">
         <div><dt>Where</dt><dd>{p.org}</dd></div>
         <div><dt>When</dt><dd class="tabular">{p.years}</dd></div>
-        <div><dt>Role</dt><dd>{roleLabels}</dd></div>
         <div><dt>Type</dt><dd>{p.type}</dd></div>
       </dl>
       <SourceLinks sources={p.sources} id="head-src" />
-    </header>
+    </PageHeader>
 
     <section class="manuscript block" aria-labelledby="context">
       <div class="stack">
@@ -84,10 +79,7 @@ const roleLabels = p.roles.map((id) => registers.find((r) => r.id === id)?.label
                 <p>{d.body}</p>
               </div>
               {d.note && (
-                <p class="note margin" data-for={d.note.for}>
-                  <b>Note for {registers.find((r) => r.id === d.note!.for)?.label} readers</b>
-                  {d.note.text}
-                </p>
+                <p class="note margin">{d.note}</p>
               )}
             </div>
           ))}
@@ -111,10 +103,6 @@ const roleLabels = p.roles.map((id) => registers.find((r) => r.id === id)?.label
 </Base>
 
 <style>
-  .head { display: grid; gap: var(--space-4); padding-block: var(--space-8) var(--space-6); max-width: 52rem; }
-  .code { color: var(--pencil); }
-  h1 { font-size: var(--t-xxl); }
-  .summary { font-family: var(--f-voice); font-size: var(--t-lg); line-height: 1.3; max-width: 40ch; }
   .facts { display: flex; flex-wrap: wrap; gap: var(--space-3) var(--space-6); }
   .facts dt { font-family: var(--f-mono); font-size: var(--t-xs); text-transform: uppercase; letter-spacing: 0.08em; color: var(--quiet); }
   .facts dd { font-weight: 500; }

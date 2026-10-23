@@ -1,5 +1,5 @@
 ---
-import RegisterSwitch from './RegisterSwitch.astro';
+import PencilMark from './PencilMark.astro';
 import { person } from '../data/site';
 
 const links = [
@@ -19,26 +19,27 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
   <nav aria-label="Main">
     <ul role="list">
       {links.map((l) => (
-        <li><a href={l.href} aria-current={isCurrent(l.href) ? 'page' : undefined}>{l.label}</a></li>
+        <li>
+          <a href={l.href} aria-current={isCurrent(l.href) ? 'page' : undefined}>
+            {l.label}
+            {isCurrent(l.href) && <PencilMark kind="circle" class="current-mark" />}
+          </a>
+        </li>
       ))}
     </ul>
   </nav>
-  <div class="controls">
-    <RegisterSwitch />
-    <button class="theme" type="button" data-theme-toggle aria-label="Switch colour theme">
-      <span aria-hidden="true"></span>
-    </button>
-  </div>
+  <button class="theme" type="button" data-theme-toggle aria-label="Switch colour theme">
+    <span aria-hidden="true"></span>
+  </button>
 </header>
 
 <style>
   .masthead {
     display: grid;
-    grid-template-columns: auto 1fr auto;
-    align-items: baseline;
+    grid-template-columns: 1fr auto auto;
+    align-items: center;
     gap: var(--space-3) var(--space-6);
-    padding-block: var(--space-5) var(--space-4);
-    border-bottom: 1px solid var(--rule);
+    padding-block: var(--space-5);
   }
   .name {
     font-family: var(--f-voice);
@@ -47,17 +48,18 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
     text-decoration: none;
     letter-spacing: -0.01em;
   }
-  nav ul { display: flex; gap: var(--space-5); }
+  nav ul { display: flex; gap: var(--space-6); }
   nav a {
+    position: relative;
     font-size: var(--t-sm);
     font-weight: 500;
-    color: var(--quiet);
+    color: var(--ink);
     text-decoration: none;
-    padding-block: var(--space-1);
+    padding: var(--space-1) 0;
   }
-  nav a:hover, nav a[aria-current='page'] { color: var(--ink); }
-  nav a[aria-current='page'] { box-shadow: inset 0 -1.5px 0 var(--pencil); }
-  .controls { display: flex; align-items: center; gap: var(--space-4); }
+  nav a:hover { color: var(--pencil); }
+  /* The current page is circled in blue pencil. */
+  nav a :global(.current-mark) { position: absolute; left: -0.9rem; top: -0.45rem; width: calc(100% + 1.8rem); height: calc(100% + 0.9rem); }
   .theme {
     width: 1.75rem;
     height: 1.75rem;
@@ -77,9 +79,8 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
     background: linear-gradient(90deg, var(--ink) 50%, transparent 50%);
   }
 
-  @media (max-width: 52rem) {
+  @media (max-width: 40rem) {
     .masthead { grid-template-columns: 1fr auto; }
     nav { grid-column: 1 / -1; grid-row: 2; }
-    .controls { grid-column: 1 / -1; grid-row: 3; justify-content: space-between; }
   }
 </style>

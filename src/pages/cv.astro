@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
 import { cvFile, person, profiles } from '../data/site';
 import { certificates, cvSkills, education, experience, languages, publications, volunteering } from '../data/profile';
 import { projects } from '../data/work';
@@ -14,10 +15,9 @@ const bare = (href: string) => href.replace(/^https?:\/\/(www\.)?/, '').replace(
 ---
 
 <Base title="CV" description="CV of Neda Taghizade Serajeh: frontend developer, M.Sc. Computer Science student at the University of Bonn.">
-  <div class="screen-only bar">
-    <p>The same CV as the PDF, without a phone number.</p>
+  <PageHeader label="CV" title="Curriculum vitae" lead="The same CV as the PDF, without a phone number.">
     <a class="button button--primary" href={cvFile.href} download>Download PDF</a>
-  </div>
+  </PageHeader>
 
   <article class="cv">
     <header class="cv-head">
@@ -106,7 +106,6 @@ const bare = (href: string) => href.replace(/^https?:\/\/(www\.)?/, '').replace(
 </Base>
 
 <style>
-  .bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-3); padding-block: var(--space-6) var(--space-4); color: var(--quiet); }
 
   .cv {
     background: var(--paper-raised);
@@ -143,7 +142,7 @@ const bare = (href: string) => href.replace(/^https?:\/\/(www\.)?/, '').replace(
   @media print {
     @page { size: A4; margin: 13mm 14mm; }
     :global(html) { --paper: #fff; --paper-raised: #fff; --ink: #111; --quiet: #444; --pencil: #2b50d8; --rule: #ccc; }
-    :global(.masthead), :global(.foot), :global(.skip), .screen-only { display: none !important; }
+    :global(.masthead), :global(.band), :global(.skip), :global(.page-header) { display: none !important; }
     :global(main.page) { padding: 0; max-width: none; }
     .cv { border: 0; padding: 0; font-size: 9.6pt; gap: 10pt; background: #fff; }
     .cv-head h1 { font-size: 20pt; }

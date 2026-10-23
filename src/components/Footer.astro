@@ -5,36 +5,48 @@ import { cvFile, person, profiles } from '../data/site';
 const year = new Date().getFullYear();
 ---
 
-<footer class="foot page" id="contact">
-  <div class="stack" style="--gap: var(--space-3)">
-    <p class="label">Contact</p>
-    <p class="lead">I’d be glad to hear about a role, a project or a question.</p>
-    <EmailCopy />
+<footer class="band" id="contact">
+  <div class="foot page">
+    <div class="stack" style="--gap: var(--space-4)">
+      <p class="hand">Let’s talk.</p>
+      <p class="lead">I’d be glad to hear about a role, a project or a question.</p>
+      <EmailCopy />
+    </div>
+    <ul role="list" class="links">
+      {profiles.map((p) => (
+        <li><a href={p.href} rel="me noopener" target="_blank">{p.label} <span aria-hidden="true">↗</span><span class="visually-hidden">(opens in a new tab)</span></a></li>
+      ))}
+      <li><a href={cvFile.href} download>{cvFile.label}</a></li>
+      <li><a href="/album/">Album</a></li>
+    </ul>
+    <p class="small">
+      © {year} {person.name} · No cookies, no tracking · <a href="/colophon/">Colophon</a>
+    </p>
   </div>
-  <ul role="list" class="links">
-    {profiles.map((p) => (
-      <li><a href={p.href} rel="me noopener" target="_blank">{p.label} <span aria-hidden="true">↗</span><span class="visually-hidden">(opens in a new tab)</span></a></li>
-    ))}
-    <li><a href={cvFile.href} download>{cvFile.label}</a></li>
-  </ul>
-  <p class="small">
-    © {year} {person.name} · No cookies, no tracking · <a href="/colophon/">Colophon</a>
-  </p>
 </footer>
 
 <style>
+  /* A full-width band in blue pencil, with paper-coloured text. */
+  .band {
+    margin-top: var(--space-8);
+    background: var(--grain), var(--pencil);
+    color: var(--paper);
+    --ink: var(--paper);
+  }
+  .band :global(a) { color: var(--paper); }
   .foot {
     display: grid;
-    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-    gap: var(--space-6);
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    gap: var(--space-7);
     padding-block: var(--space-8) var(--space-6);
-    margin-top: var(--space-8);
-    border-top: 1px solid var(--rule);
   }
-  .lead { font-family: var(--f-voice); font-size: var(--t-lg); line-height: 1.25; max-width: 24ch; }
-  .links { display: grid; gap: var(--space-2); align-content: end; }
-  .links a { font-weight: 500; }
-  .small { grid-column: 1 / -1; font-size: var(--t-sm); color: var(--quiet); }
-  .small a { color: inherit; }
-  @media (max-width: 40rem) { .foot { grid-template-columns: minmax(0, 1fr); } }
+  .hand { font-family: var(--f-hand); font-size: clamp(3.5rem, 2rem + 6vw, 7rem); line-height: 0.9; transform: rotate(-3deg); transform-origin: left; }
+  .lead { font-family: var(--f-voice); font-size: var(--t-lg); line-height: 1.2; letter-spacing: -0.01em; max-width: 26ch; }
+  .links { display: grid; gap: var(--space-3); align-content: end; }
+  .links a { font-size: var(--t-md); font-weight: 500; }
+  .small { grid-column: 1 / -1; font-size: var(--t-sm); padding-top: var(--space-5); border-top: 1px solid color-mix(in srgb, var(--paper) 35%, transparent); }
+  .band :global(:focus-visible) { outline-color: var(--paper); }
+  .band :global(.button) { border-color: var(--paper); color: var(--paper); }
+  .band :global(.button:hover) { background: var(--paper); color: var(--pencil); }
+  @media (max-width: 40rem) { .foot { grid-template-columns: minmax(0, 1fr); gap: var(--space-6); } }
 </style>

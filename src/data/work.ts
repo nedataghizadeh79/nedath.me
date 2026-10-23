@@ -1,5 +1,3 @@
-import type { Register } from './site';
-
 /** A public link that backs up a claim. The note tells the reader what is behind it. */
 export interface Source {
   label: string;
@@ -13,11 +11,11 @@ export interface DiagramStep {
   detail: string;
 }
 
-/** A decision in a case study, with an optional margin note for one reading. */
+/** A decision in a case study, with an optional margin note in blue pencil. */
 export interface Decision {
   title: string;
   body: string;
-  note?: { for: Register; text: string };
+  note?: string;
 }
 
 export interface CaseStudy {
@@ -46,10 +44,9 @@ export interface Project {
   /** Sort key: the year the work started. */
   start: number;
   summary: string;
-  roles: Register[];
   type: WorkType;
-  /** Position per reading on the home page; omit a reading to leave it out of "Selected work". */
-  featured?: Partial<Record<Register, number>>;
+  /** Position on the home page; omit to leave the project out of "Selected work". */
+  featured?: number;
   sources: Source[];
   caseStudy?: CaseStudy;
 }
@@ -66,9 +63,8 @@ export const projects: Project[] = [
     start: 2025,
     summary:
       'Open-source React and TypeScript widgets that let research apps show ontology data, including cross-ontology mappings, without custom code.',
-    roles: ['frontend', 'design', 'people'],
     type: 'Open source',
-    featured: { frontend: 1, design: 3, people: 3 },
+    featured: 1,
     sources: [
       {
         label: 'GitHub · 33 merged PRs',
@@ -115,17 +111,17 @@ export const projects: Project[] = [
         {
           title: 'Separate the data from the interface',
           body: 'Some apps already have the ontology data and only need the interface. Splitting each widget into a data layer and a presentation layer lets them reuse the UI without the built-in requests.',
-          note: { for: 'frontend', text: 'Done widget by widget, so each pull request stayed small enough to review.' },
+          note: 'Done widget by widget, so each pull request stayed small enough to review.',
         },
         {
           title: 'Show mappings in both directions',
           body: 'A term can be mapped to other ontologies and others can be mapped to it. The mapping list shows either direction, or both, so researchers see the full picture in one place.',
-          note: { for: 'design', text: 'Filters and a detail view keep long mapping lists readable.' },
+          note: 'Filters and a detail view keep long mapping lists readable.',
         },
         {
           title: 'Make the library usable without React',
           body: 'Many research apps are not React apps. Plain JavaScript wrappers mount each widget into any page, which widens who can adopt the library.',
-          note: { for: 'people', text: 'Requested by the maintainers in an issue and reviewed by them, widget by widget.' },
+          note: 'Requested by the maintainers in an issue and reviewed by them, widget by widget.',
         },
       ],
       outcome: [
@@ -143,9 +139,8 @@ export const projects: Project[] = [
     start: 2022,
     summary:
       'Helped move the seller panel of Iran’s largest online retailer from Twig templates to reusable React and TypeScript components.',
-    roles: ['frontend'],
     type: 'Product',
-    featured: { frontend: 2 },
+    featured: 3,
     sources: [
       { label: 'digikala.com', href: 'https://www.digikala.com', note: 'digikala.com: the company’s public site. The Seller Center itself is private.' },
     ],
@@ -193,9 +188,8 @@ export const projects: Project[] = [
     start: 2022,
     summary:
       'Designed the platform’s interface for desktop and mobile in Figma, then built it in React with my colleagues.',
-    roles: ['design', 'frontend'],
     type: 'Product',
-    featured: { design: 1, frontend: 3 },
+    featured: 2,
     sources: [
       {
         label: 'Figma file',
@@ -239,9 +233,7 @@ export const projects: Project[] = [
     start: 2024,
     summary:
       'First-author paper on whether GPT-3.5 and Llama 2 can extract experimental data from HCI studies, and where they go wrong.',
-    roles: ['design'],
     type: 'Research',
-    featured: { design: 2 },
     sources: [
       { label: 'arXiv paper', href: 'https://arxiv.org/abs/2403.18173', note: 'arxiv.org: the full paper, free to read' },
     ],
@@ -258,7 +250,7 @@ export const projects: Project[] = [
         {
           title: 'Check the model against the papers',
           body: 'The value of the study is in the errors. Each extracted value was checked against the source paper, which shows where the models can help and where a person still has to look.',
-          note: { for: 'design', text: 'The same habit as usability testing: look at what really happens, not what should happen.' },
+          note: 'The same habit as usability testing: look at what really happens, not what should happen.',
         },
       ],
       outcome: [
@@ -275,9 +267,8 @@ export const projects: Project[] = [
     start: 2025,
     summary:
       'Turned client requirements into user stories and documentation for ServiceNow security and compliance projects, and helped run client IT workshops.',
-    roles: ['people'],
     type: 'Product',
-    featured: { people: 1 },
+    featured: 4,
     sources: [{ label: 'serity.de', href: 'https://serity.de', note: 'serity.de: the consultancy’s public site' }],
   },
   {
@@ -289,9 +280,7 @@ export const projects: Project[] = [
     start: 2021,
     summary:
       'Director of the Computer Engineering student association. Coordinated and presented at Shenasa, an event on AI, neuroscience and cognitive science.',
-    roles: ['people'],
     type: 'Leadership',
-    featured: { people: 2 },
     sources: [],
   },
   {
@@ -303,7 +292,6 @@ export const projects: Project[] = [
     start: 2026,
     summary:
       'Co-author of a parallel dataset for moving between colloquial and formal Persian, which received the Best Resource Paper award.',
-    roles: [],
     type: 'Research',
     sources: [
       { label: 'ACL Anthology', href: 'https://aclanthology.org/2026.eacl-long.346/', note: 'aclanthology.org: the paper and its citation' },
@@ -317,7 +305,6 @@ export const projects: Project[] = [
     years: '2024',
     start: 2024,
     summary: 'Hotel search by city and dates, with a Leaflet map, geolocation, React Router and the Context API.',
-    roles: ['frontend'],
     type: 'Side project',
     sources: [
       { label: 'GitHub', href: 'https://github.com/nedataghizadeh79/booking_hotel', note: 'github.com: the source code' },
@@ -331,7 +318,6 @@ export const projects: Project[] = [
     years: '2022',
     start: 2022,
     summary: 'Designed UI screens in Figma and implemented them in React for AYOT’s smart-home platform.',
-    roles: ['design', 'frontend'],
     type: 'Product',
     sources: [],
   },
@@ -343,7 +329,6 @@ export const projects: Project[] = [
     years: '2023',
     start: 2023,
     summary: 'Ranks Persian sentence variants with BERT and n-gram models to turn informal text into formal text.',
-    roles: [],
     type: 'Side project',
     sources: [
       {
@@ -358,9 +343,7 @@ export const projects: Project[] = [
 /** Projects that have their own case-study page. */
 export const caseStudies = projects.filter((p) => p.caseStudy);
 
-/** Home-page selection for one reading, in its own order. */
-export function featuredFor(register: Register): Project[] {
-  return projects
-    .filter((p) => p.featured?.[register] !== undefined)
-    .sort((a, b) => (a.featured![register]! - b.featured![register]!));
-}
+/** Home-page selection, in its own order. */
+export const featured = projects
+  .filter((p) => p.featured !== undefined)
+  .sort((a, b) => a.featured! - b.featured!);

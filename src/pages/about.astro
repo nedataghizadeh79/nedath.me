@@ -1,32 +1,31 @@
 ---
-import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
-import portrait from '../assets/portrait.jpg';
-import { person, registers } from '../data/site';
-import { certificates, education, experience, languages, outsideWork, publications, skills, volunteering, type Role } from '../data/profile';
-
-/** Label for a list of readings, e.g. "Frontend, UI/UX". */
-const roleLabel = (ids: Role['roles']) => ids.map((id) => registers.find((r) => r.id === id)?.label).join(', ');
+import PageHeader from '../components/PageHeader.astro';
+import Print from '../components/Print.astro';
+import { aboutPhoto } from '../data/album';
+import { person } from '../data/site';
+import { certificates, education, experience, languages, outsideWork, publications, skills, volunteering } from '../data/profile';
 ---
 
 <Base title="About" description="About Neda Taghizade Serajeh: experience, education, publications, skills with evidence, and languages.">
-  <section class="intro">
-    <div class="stack" style="--gap: var(--space-5)">
-      <p class="label">About</p>
-      <h1>I build interfaces, and I like the part where people and code meet.</h1>
-      <p>
-        I’m a frontend developer in Bonn and an M.Sc. Computer Science student at the University of Bonn. At ZB MED I build
-        open-source React widgets that research apps use to show ontology data. Before that I worked on Digikala’s Seller
-        Center in Tehran, and designed and built interfaces at AYOT.
-      </p>
-      <p>
-        I enjoy work where design, code and people overlap: designing a screen and then building it, turning a client’s needs
-        into user stories, or presenting research to a mixed audience. I studied Computer Engineering at Sharif University of
-        Technology.
-      </p>
-    </div>
-    <Image class="photo" src={portrait} alt={`Portrait of ${person.name}`} widths={[400, 640, 800]} sizes="(min-width: 52rem) 22rem, 100vw" />
-  </section>
+  <PageHeader label="About" title="Where people and code meet">
+    <p class="story">
+      I’m a frontend developer in Bonn and an M.Sc. Computer Science student at the University of Bonn. At ZB MED I build
+      open-source React widgets that research apps use to show ontology data. Before that I worked on Digikala’s Seller
+      Center in Tehran, and designed and built interfaces at AYOT.
+    </p>
+    <p class="story">
+      I enjoy work where design, code and people overlap: designing a screen and then building it, turning a client’s needs
+      into user stories, or presenting research to a mixed audience. I studied Computer Engineering at Sharif University of
+      Technology.
+    </p>
+    <Fragment slot="aside">
+      <a class="album-link" href="/album/">
+        <Print src={aboutPhoto.src} alt={aboutPhoto.alt} tilt={-2} sizes="(min-width: 52rem) 20rem, 17rem" loading="eager" />
+        <span class="note">more photos in the album →</span>
+      </a>
+    </Fragment>
+  </PageHeader>
 
   <section class="section" aria-labelledby="experience">
     <h2 id="experience">Experience</h2>
@@ -42,7 +41,6 @@ const roleLabel = (ids: Role['roles']) => ids.map((id) => registers.find((r) => 
             <ul role="list" class="points">{job.points.map((pt) => <li>{pt}</li>)}</ul>
             {job.project && <a class="more" href={`/work/${job.project}/`}>Read the case study →</a>}
           </div>
-          <p class="tag">{roleLabel(job.roles)}</p>
         </li>
       ))}
     </ul>
@@ -59,7 +57,6 @@ const roleLabel = (ids: Role['roles']) => ids.map((id) => registers.find((r) => 
             <p class="org">{v.org} · {v.place}</p>
             <ul role="list" class="points">{v.points.map((pt) => <li>{pt}</li>)}</ul>
           </div>
-          <p class="tag">{roleLabel(v.roles)}</p>
         </li>
       ))}
     </ul>
@@ -93,13 +90,12 @@ const roleLabel = (ids: Role['roles']) => ids.map((id) => registers.find((r) => 
     <h2 id="skills">Skills, with where I used them</h2>
     <div class="table-wrap">
       <table>
-        <thead><tr><th scope="col">Skill</th><th scope="col">Where</th><th scope="col">Reading</th></tr></thead>
+        <thead><tr><th scope="col">Skill</th><th scope="col">Where</th></tr></thead>
         <tbody>
           {skills.map((s) => (
-            <tr data-roles={s.roles.join(' ')}>
+            <tr>
               <th scope="row">{s.name}</th>
               <td>{s.evidence}</td>
-              <td class="tag">{roleLabel(s.roles)}</td>
             </tr>
           ))}
         </tbody>
@@ -129,16 +125,9 @@ const roleLabel = (ids: Role['roles']) => ids.map((id) => registers.find((r) => 
 </Base>
 
 <style>
-  .intro {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 22rem;
-    gap: var(--space-7);
-    padding-block: var(--space-8);
-    align-items: start;
-  }
-  .intro h1 { font-size: var(--t-xl); max-width: 20ch; }
-  .intro p:not(.label) { max-width: var(--measure); }
-  .photo { aspect-ratio: 4 / 5; object-fit: cover; width: 100%; filter: saturate(0.92); }
+  .album-link { display: grid; gap: var(--space-5); text-decoration: none; }
+  .album-link .note { justify-self: end; }
+  .story { max-width: var(--measure); }
 
   .section > h2, .two-col h2 { font-size: var(--t-xl); margin-bottom: var(--space-5); }
   h3 { font-size: var(--t-md); font-weight: 500; }
@@ -146,14 +135,13 @@ const roleLabel = (ids: Role['roles']) => ids.map((id) => registers.find((r) => 
   .entries { display: grid; }
   .entry {
     display: grid;
-    grid-template-columns: 11rem minmax(0, 1fr) 8rem;
+    grid-template-columns: 11rem minmax(0, 1fr);
     gap: var(--space-2) var(--space-5);
     padding-block: var(--space-5);
     border-top: 1px solid var(--rule);
   }
-  .when, .meta, .tag { font-family: var(--f-mono); font-size: var(--t-xs); color: var(--quiet); }
+  .when, .meta { font-family: var(--f-mono); font-size: var(--t-xs); color: var(--quiet); }
   .when { padding-top: 0.35em; }
-  .tag { text-align: right; padding-top: 0.35em; }
   .org { color: var(--quiet); }
   .points { display: grid; gap: var(--space-1); max-width: 64ch; }
   .points li { position: relative; padding-left: 1.2rem; }
@@ -169,11 +157,6 @@ const roleLabel = (ids: Role['roles']) => ids.map((id) => registers.find((r) => 
   th, td { text-align: left; vertical-align: top; padding: var(--space-3) var(--space-4) var(--space-3) 0; border-top: 1px solid var(--rule); }
   thead th { font-family: var(--f-mono); font-size: var(--t-xs); font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--quiet); border-top: 0; }
   tbody th { font-weight: 600; white-space: nowrap; }
-  td.tag { text-align: left; }
-  /* Rows that belong to the current reading get a blue-pencil mark. */
-  html[data-read='frontend'] tr[data-roles~='frontend'] th,
-  html[data-read='people'] tr[data-roles~='people'] th,
-  html[data-read='design'] tr[data-roles~='design'] th { box-shadow: inset 3px 0 0 var(--pencil); padding-left: var(--space-3); }
 
   .pairs { display: grid; gap: var(--space-3); }
   .pairs dt { font-weight: 600; }
@@ -181,10 +164,7 @@ const roleLabel = (ids: Role['roles']) => ids.map((id) => registers.find((r) => 
   .outside { font-family: var(--f-voice); font-size: var(--t-md); max-width: 52ch; }
 
   @media (max-width: 52rem) {
-    .intro { grid-template-columns: minmax(0, 1fr); }
-    .photo { max-width: 18rem; grid-row: 1; }
-    .entry { grid-template-columns: minmax(0, 1fr); }
-    .tag { text-align: left; }
+      .entry { grid-template-columns: minmax(0, 1fr); }
     .two-col { grid-template-columns: minmax(0, 1fr); }
   }
 </style>

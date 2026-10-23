@@ -1,7 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import ProjectRow from '../../components/ProjectRow.astro';
-import { registers } from '../../data/site';
+import PageHeader from '../../components/PageHeader.astro';
 import { projects, type WorkType } from '../../data/work';
 
 const sorted = [...projects].sort((a, b) => b.start - a.start);
@@ -10,11 +10,6 @@ const types = [...new Set(sorted.map((p) => p.type))] as WorkType[];
 /** Facet groups: each option knows how many entries match it. */
 const facets = [
   {
-    key: 'roles',
-    label: 'Role',
-    options: registers.map((r) => ({ value: r.id, label: r.label, count: sorted.filter((p) => p.roles.includes(r.id)).length })),
-  },
-  {
     key: 'type',
     label: 'Type',
     options: types.map((t) => ({ value: t, label: t, count: sorted.filter((p) => p.type === t).length })),
@@ -22,12 +17,8 @@ const facets = [
 ];
 ---
 
-<Base title="Work" description="An index of Neda Taghizade Serajeh’s frontend, design, research and people work, filterable by role and type.">
-  <header class="intro">
-    <p class="label">Index</p>
-    <h1>Work</h1>
-    <p>Every project, with links to public sources. Entries with a case study open on their own page. Filter by role or type.</p>
-  </header>
+<Base title="Work" description="An index of Neda Taghizade Serajeh’s work: frontend products, open source, research and leadership.">
+  <PageHeader label="Index" title="Work" lead="Every project, with links to public sources. Entries with a case study open on their own page." />
 
   <div class="catalogue">
     <aside class="facets" aria-label="Filters">
@@ -49,7 +40,7 @@ const facets = [
       <ul role="list" data-results>
         {sorted.map((p) => <ProjectRow project={p} level="h2" />)}
       </ul>
-      <p class="empty" data-empty hidden>No entries match both filters. <button type="button" data-clear>Clear filters</button></p>
+      <p class="empty" data-empty hidden>No entries match this filter. <button type="button" data-clear>Clear filters</button></p>
     </div>
   </div>
 </Base>
@@ -60,9 +51,6 @@ const facets = [
 </script>
 
 <style>
-  .intro { padding-block: var(--space-8) var(--space-6); display: grid; gap: var(--space-3); max-width: 60ch; }
-  .intro h1 { font-size: var(--t-xxl); }
-  .intro p:last-child { color: var(--quiet); }
   .catalogue { display: grid; grid-template-columns: 12rem minmax(0, 1fr); gap: var(--space-7); align-items: start; }
   .facets { position: sticky; top: var(--space-5); display: grid; gap: var(--space-5); }
   .facet { display: grid; gap: var(--space-1); justify-items: start; }

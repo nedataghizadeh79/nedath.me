@@ -1,12 +1,12 @@
 /**
  * Faceted filtering for the Work index.
  * One value per facet at a time; facets combine with AND.
- * Selection is kept in the URL (?role=…&type=…) so a filtered view can be shared.
+ * Selection is kept in the URL (?type=…) so a filtered view can be shared.
  */
 
 type Selection = Record<string, string | null>;
 
-const paramFor: Record<string, string> = { roles: 'role', type: 'type' };
+const paramFor: Record<string, string> = { type: 'type' };
 
 export function applyFilters() {
   const rows = [...document.querySelectorAll<HTMLElement>('[data-results] > .row')];
@@ -17,14 +17,13 @@ export function applyFilters() {
   if (!rows.length) return;
 
   const params = new URL(location.href).searchParams;
-  const selection: Selection = { roles: params.get('role'), type: params.get('type') };
+  const selection: Selection = { type: params.get('type') };
 
   /** True when a row matches every active facet. */
   const matches = (row: HTMLElement) =>
     Object.entries(selection).every(([key, value]) => {
       if (!value) return true;
-      const field = row.dataset[key] ?? '';
-      return key === 'roles' ? field.split(' ').includes(value) : field === value;
+      return (row.dataset[key] ?? '') === value;
     });
 
   function render() {
