@@ -1,0 +1,93 @@
+---
+import Base from '../../layouts/Base.astro';
+import ProjectRow from '../../components/ProjectRow.astro';
+import { registers } from '../../data/site';
+import { projects, type WorkType } from '../../data/work';
+
+const sorted = [...projects].sort((a, b) => b.start - a.start);
+const types = [...new Set(sorted.map((p) => p.type))] as WorkType[];
+
+/** Facet groups: each option knows how many entries match it. */
+const facets = [
+  {
+    key: 'roles',
+    label: 'Role',
+    options: registers.map((r) => ({ value: r.id, label: r.label, count: sorted.filter((p) => p.roles.includes(r.id)).length })),
+  },
+  {
+    key: 'type',
+    label: 'Type',
+    options: types.map((t) => ({ value: t, label: t, count: sorted.filter((p) => p.type === t).length })),
+  },
+];
+---
+
+<Base title="Work" description="An index of Neda Taghizade Serajeh’s frontend, design, research and people work, filterable by role and type.">
+  <header class="intro">
+    <p class="label">Index</p>
+    <h1>Work</h1>
+    <p>Every project, with links to public sources. Entries with a case study open on their own page. Filter by role or type.</p>
+  </header>
+
+  <div class="catalogue">
+    <aside class="facets" aria-label="Filters">
+      {facets.map((f) => (
+        <div class="facet" role="group" aria-labelledby={`facet-${f.key}`}>
+          <p class="label" id={`facet-${f.key}`}>{f.label}</p>
+          {f.options.map((o) => (
+            <button type="button" data-facet={f.key} data-value={o.value} aria-pressed="false">
+              {o.label} <span class="count tabular">{o.count}</span>
+            </button>
+          ))}
+        </div>
+      ))}
+      <button type="button" class="clear" data-clear hidden>Clear filters</button>
+    </aside>
+
+    <div class="results">
+      <p class="status" aria-live="polite" data-status>Showing all {sorted.length} entries</p>
+      <ul role="list" data-results>
+        {sorted.map((p) => <ProjectRow project={p} level="h2" />)}
+      </ul>
+      <p class="empty" data-empty hidden>No entries match both filters. <button type="button" data-clear>Clear filters</button></p>
+    </div>
+  </div>
+</Base>
+
+<script>
+  import { applyFilters } from '../../scripts/filter';
+  applyFilters();
+</script>
+
+<style>
+  .intro { padding-block: var(--space-8) var(--space-6); display: grid; gap: var(--space-3); max-width: 60ch; }
+  .intro h1 { font-size: var(--t-xxl); }
+  .intro p:last-child { color: var(--quiet); }
+  .catalogue { display: grid; grid-template-columns: 12rem minmax(0, 1fr); gap: var(--space-7); align-items: start; }
+  .facets { position: sticky; top: var(--space-5); display: grid; gap: var(--space-5); }
+  .facet { display: grid; gap: var(--space-1); justify-items: start; }
+  .facet .label { margin-bottom: var(--space-1); }
+  .facet button, .clear, .empty button {
+    border: 0;
+    background: none;
+    padding: var(--space-1) 0;
+    font-size: var(--t-sm);
+    color: var(--quiet);
+    cursor: pointer;
+    text-align: left;
+  }
+  .facet button:hover { color: var(--ink); }
+  .facet button[aria-pressed='true'] { color: var(--pencil); font-weight: 600; }
+  .facet button[aria-pressed='true']::before { content: '● '; font-size: 0.6em; vertical-align: 0.2em; }
+  .count { font-family: var(--f-mono); font-size: var(--t-xs); color: var(--quiet); margin-left: var(--space-1); }
+  .clear, .empty button { color: var(--pencil); text-decoration: underline; text-underline-offset: 0.2em; }
+  .status { font-family: var(--f-mono); font-size: var(--t-xs); color: var(--quiet); margin-bottom: var(--space-3); }
+  .empty { padding-block: var(--space-6); color: var(--quiet); }
+  [data-results] :global(.row[hidden]) { display: none; }
+
+  @media (max-width: 52rem) {
+    .catalogue { grid-template-columns: minmax(0, 1fr); gap: var(--space-5); }
+    .facets { position: static; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .clear { grid-column: 1 / -1; }
+  }
+</style>

@@ -1,0 +1,45 @@
+---
+/**
+ * Source for the social preview image (public/og.png).
+ * Rendered at 1200×630 by `npm run render`; not linked from the site.
+ */
+import '@fontsource-variable/newsreader/opsz.css';
+import '@fontsource/ibm-plex-mono/latin-500.css';
+import '../styles/global.css';
+import { abstract, person } from '../data/site';
+---
+
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
+    <title>Preview image</title>
+  </head>
+  <body>
+    <div class="card">
+      <p class="label">{person.name} · {person.role} · {person.location}</p>
+      <p class="statement">{abstract.frontend.statement}</p>
+      <p class="foot"><span class="dots" aria-hidden="true"></span> Frontend · People · UI/UX <span class="url">nedath.me</span></p>
+    </div>
+  </body>
+</html>
+
+<style>
+  body { margin: 0; }
+  .card {
+    width: 1200px;
+    height: 630px;
+    padding: 72px 80px;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    gap: 32px;
+    background: var(--paper);
+    color: var(--ink);
+  }
+  .label { font-size: 18px; }
+  .statement { font-family: var(--f-voice); font-size: 58px; line-height: 1.1; letter-spacing: -0.02em; max-width: 24ch; align-self: center; }
+  .foot { font-family: var(--f-mono); font-size: 20px; color: var(--pencil); display: flex; align-items: center; gap: 16px; }
+  .url { margin-left: auto; color: var(--ink); }
+  .dots { width: 36px; height: 10px; background-size: 12px 10px; }
+</style>

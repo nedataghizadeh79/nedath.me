@@ -1,0 +1,190 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import portrait from '../assets/portrait.jpg';
+import { person, registers } from '../data/site';
+import { certificates, education, experience, languages, outsideWork, publications, skills, volunteering, type Role } from '../data/profile';
+
+/** Label for a list of readings, e.g. "Frontend, UI/UX". */
+const roleLabel = (ids: Role['roles']) => ids.map((id) => registers.find((r) => r.id === id)?.label).join(', ');
+---
+
+<Base title="About" description="About Neda Taghizade Serajeh: experience, education, publications, skills with evidence, and languages.">
+  <section class="intro">
+    <div class="stack" style="--gap: var(--space-5)">
+      <p class="label">About</p>
+      <h1>I build interfaces, and I like the part where people and code meet.</h1>
+      <p>
+        I’m a frontend developer in Bonn and an M.Sc. Computer Science student at the University of Bonn. At ZB MED I build
+        open-source React widgets that research apps use to show ontology data. Before that I worked on Digikala’s Seller
+        Center in Tehran, and designed and built interfaces at AYOT.
+      </p>
+      <p>
+        I enjoy work where design, code and people overlap: designing a screen and then building it, turning a client’s needs
+        into user stories, or presenting research to a mixed audience. I studied Computer Engineering at Sharif University of
+        Technology.
+      </p>
+    </div>
+    <Image class="photo" src={portrait} alt={`Portrait of ${person.name}`} widths={[400, 640, 800]} sizes="(min-width: 52rem) 22rem, 100vw" />
+  </section>
+
+  <section class="section" aria-labelledby="experience">
+    <h2 id="experience">Experience</h2>
+    <ul role="list" class="entries">
+      {experience.map((job) => (
+        <li class="entry">
+          <p class="when tabular">{job.dates}</p>
+          <div class="stack" style="--gap: var(--space-2)">
+            <h3>{job.title}</h3>
+            <p class="org">
+              {job.orgHref ? <a href={job.orgHref} target="_blank" rel="noopener">{job.org}</a> : job.org} · {job.place}
+            </p>
+            <ul role="list" class="points">{job.points.map((pt) => <li>{pt}</li>)}</ul>
+            {job.project && <a class="more" href={`/work/${job.project}/`}>Read the case study →</a>}
+          </div>
+          <p class="tag">{roleLabel(job.roles)}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="section" aria-labelledby="volunteering">
+    <h2 id="volunteering">Leadership and volunteering</h2>
+    <ul role="list" class="entries">
+      {volunteering.map((v) => (
+        <li class="entry">
+          <p class="when tabular">{v.dates}</p>
+          <div class="stack" style="--gap: var(--space-2)">
+            <h3>{v.title}</h3>
+            <p class="org">{v.org} · {v.place}</p>
+            <ul role="list" class="points">{v.points.map((pt) => <li>{pt}</li>)}</ul>
+          </div>
+          <p class="tag">{roleLabel(v.roles)}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="section two-col" aria-labelledby="education">
+    <div class="stack">
+      <h2 id="education">Education</h2>
+      {education.map((e) => (
+        <div class="stack" style="--gap: var(--space-1)">
+          <h3>{e.degree}</h3>
+          <p class="org"><a href={e.href} target="_blank" rel="noopener">{e.school}</a></p>
+          <p class="meta tabular">{e.dates} · Grade {e.grade}</p>
+        </div>
+      ))}
+    </div>
+    <div class="stack">
+      <h2 id="publications">Publications</h2>
+      {publications.map((pub) => (
+        <div class="stack" style="--gap: var(--space-1)">
+          <h3 class="pub"><a href={pub.href} target="_blank" rel="noopener">{pub.title}</a></h3>
+          <p class="meta">{pub.venue}{pub.award && <> · <strong>{pub.award}</strong></>}</p>
+          <p class="meta">{pub.authors}</p>
+        </div>
+      ))}
+      <p class="note">Published as {person.publishedAs}.</p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="skills">
+    <h2 id="skills">Skills, with where I used them</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th scope="col">Skill</th><th scope="col">Where</th><th scope="col">Reading</th></tr></thead>
+        <tbody>
+          {skills.map((s) => (
+            <tr data-roles={s.roles.join(' ')}>
+              <th scope="row">{s.name}</th>
+              <td>{s.evidence}</td>
+              <td class="tag">{roleLabel(s.roles)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section two-col" aria-labelledby="languages">
+    <div class="stack">
+      <h2 id="languages">Languages</h2>
+      <dl class="pairs">
+        {languages.map((l) => <div><dt>{l.name}</dt><dd>{l.level}</dd></div>)}
+      </dl>
+    </div>
+    <div class="stack">
+      <h2 id="certificates">Certificates</h2>
+      <dl class="pairs">
+        {certificates.map((c) => <div><dt>{c.name}</dt><dd>{c.issuer}, {c.date}</dd></div>)}
+      </dl>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="outside">
+    <h2 id="outside">Outside work</h2>
+    <p class="outside">{outsideWork}</p>
+  </section>
+</Base>
+
+<style>
+  .intro {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 22rem;
+    gap: var(--space-7);
+    padding-block: var(--space-8);
+    align-items: start;
+  }
+  .intro h1 { font-size: var(--t-xl); max-width: 20ch; }
+  .intro p:not(.label) { max-width: var(--measure); }
+  .photo { aspect-ratio: 4 / 5; object-fit: cover; width: 100%; filter: saturate(0.92); }
+
+  .section > h2, .two-col h2 { font-size: var(--t-xl); margin-bottom: var(--space-5); }
+  h3 { font-size: var(--t-md); font-weight: 500; }
+
+  .entries { display: grid; }
+  .entry {
+    display: grid;
+    grid-template-columns: 11rem minmax(0, 1fr) 8rem;
+    gap: var(--space-2) var(--space-5);
+    padding-block: var(--space-5);
+    border-top: 1px solid var(--rule);
+  }
+  .when, .meta, .tag { font-family: var(--f-mono); font-size: var(--t-xs); color: var(--quiet); }
+  .when { padding-top: 0.35em; }
+  .tag { text-align: right; padding-top: 0.35em; }
+  .org { color: var(--quiet); }
+  .points { display: grid; gap: var(--space-1); max-width: 64ch; }
+  .points li { position: relative; padding-left: 1.2rem; }
+  .points li::before { content: ''; position: absolute; left: 0.15rem; top: 0.68em; width: 4px; height: 4px; border-radius: 50%; background: var(--pencil); }
+  .more { font-size: var(--t-sm); font-weight: 600; }
+
+  .two-col { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-7); }
+  .pub { font-family: var(--f-voice); font-size: var(--t-md); line-height: 1.3; }
+  .pub a { color: var(--ink); text-decoration-color: var(--pencil); }
+
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; min-width: 34rem; }
+  th, td { text-align: left; vertical-align: top; padding: var(--space-3) var(--space-4) var(--space-3) 0; border-top: 1px solid var(--rule); }
+  thead th { font-family: var(--f-mono); font-size: var(--t-xs); font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--quiet); border-top: 0; }
+  tbody th { font-weight: 600; white-space: nowrap; }
+  td.tag { text-align: left; }
+  /* Rows that belong to the current reading get a blue-pencil mark. */
+  html[data-read='frontend'] tr[data-roles~='frontend'] th,
+  html[data-read='people'] tr[data-roles~='people'] th,
+  html[data-read='design'] tr[data-roles~='design'] th { box-shadow: inset 3px 0 0 var(--pencil); padding-left: var(--space-3); }
+
+  .pairs { display: grid; gap: var(--space-3); }
+  .pairs dt { font-weight: 600; }
+  .pairs dd { color: var(--quiet); }
+  .outside { font-family: var(--f-voice); font-size: var(--t-md); max-width: 52ch; }
+
+  @media (max-width: 52rem) {
+    .intro { grid-template-columns: minmax(0, 1fr); }
+    .photo { max-width: 18rem; grid-row: 1; }
+    .entry { grid-template-columns: minmax(0, 1fr); }
+    .tag { text-align: left; }
+    .two-col { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>

@@ -1,0 +1,218 @@
+/*
+ * Design tokens and base styles.
+ * Concept: an annotated manuscript (Register) with a working index (Catalogue).
+ * One accent only: "blue pencil", the colour editors use for annotations.
+ */
+
+@layer reset, tokens, base, layout, components, utilities;
+
+@layer reset {
+  *, *::before, *::after { box-sizing: border-box; }
+  body, h1, h2, h3, h4, p, figure, blockquote, dl, dd, ul, ol { margin: 0; }
+  ul[role='list'], ol[role='list'] { list-style: none; padding: 0; }
+  img { display: block; max-width: 100%; height: auto; }
+  button, input { font: inherit; color: inherit; }
+  [hidden] { display: none !important; }
+}
+
+@layer tokens {
+  :root {
+    --paper: #f1f3f0;
+    --paper-raised: #f8f9f6;
+    --ink: #15171b;
+    --quiet: #5b6168;
+    --rule: color-mix(in srgb, var(--ink) 16%, transparent);
+    --pencil: #2b50d8;
+    --mark: #cfe3f2;
+    --placeholder: #9a5b00;
+    --placeholder-bg: #fbf0d9;
+
+    --f-voice: 'Newsreader Variable', 'Iowan Old Style', Georgia, serif;
+    --f-ui: 'Schibsted Grotesk Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --f-mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+
+    /* Type scale (fluid, ~1.25 ratio) */
+    --t-xs: 0.75rem;
+    --t-sm: 0.875rem;
+    --t-base: 1.0625rem;
+    --t-md: clamp(1.15rem, 1.05rem + 0.4vw, 1.3rem);
+    --t-lg: clamp(1.4rem, 1.2rem + 0.9vw, 1.85rem);
+    --t-xl: clamp(1.9rem, 1.4rem + 2.2vw, 3rem);
+    --t-xxl: clamp(2.2rem, 1.5rem + 3.4vw, 4rem);
+
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.5rem;
+    --space-6: 2rem;
+    --space-7: 3rem;
+    --space-8: 4.5rem;
+    --space-9: 6.5rem;
+
+    --measure: 66ch;
+    --page: 76rem;
+    --gutter: max(1rem, 4vw);
+
+    --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+    --dur: 260ms;
+    color-scheme: light;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) {
+      --paper: #121418;
+      --paper-raised: #181b20;
+      --ink: #e7e9ec;
+      --quiet: #a0a6ad;
+      --pencil: #8fa8ff;
+      --mark: #22385a;
+      --placeholder: #f0c36b;
+      --placeholder-bg: #2e2510;
+      color-scheme: dark;
+    }
+  }
+
+  :root[data-theme='dark'] {
+    --paper: #121418;
+    --paper-raised: #181b20;
+    --ink: #e7e9ec;
+    --quiet: #a0a6ad;
+    --pencil: #8fa8ff;
+    --mark: #22385a;
+    --placeholder: #f0c36b;
+    --placeholder-bg: #2e2510;
+    color-scheme: dark;
+  }
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; scroll-padding-top: 6rem; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--f-ui);
+    font-size: var(--t-base);
+    line-height: 1.6;
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3 { font-family: var(--f-voice); font-weight: 450; line-height: 1.12; letter-spacing: -0.012em; text-wrap: balance; }
+  h4 { font-size: var(--t-base); font-weight: 600; }
+  p, li { text-wrap: pretty; }
+  a { color: var(--pencil); text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
+  a:hover { text-decoration-thickness: 2px; }
+  :focus-visible { outline: 2px solid var(--pencil); outline-offset: 3px; border-radius: 2px; }
+  ::selection { background: var(--mark); color: var(--ink); }
+  mark { background: linear-gradient(transparent 60%, var(--mark) 60%); color: inherit; padding-inline: 0.1em; }
+  code { font-family: var(--f-mono); font-size: 0.9em; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+  }
+}
+
+@layer layout {
+  .page {
+    max-width: var(--page);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  /* Manuscript: a reading column and a margin for notes. */
+  .manuscript {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-5) var(--space-7);
+  }
+  @media (min-width: 60rem) {
+    .manuscript { grid-template-columns: minmax(0, var(--measure)) minmax(12rem, 1fr); }
+    .manuscript > .margin { grid-column: 2; }
+    .manuscript > .full { grid-column: 1 / -1; }
+  }
+
+  .stack { display: grid; gap: var(--gap, var(--space-4)); align-content: start; }
+  .section { padding-block: var(--space-8); border-top: 1px solid var(--rule); }
+  .section:first-child { border-top: 0; }
+}
+
+@layer components {
+  .label {
+    font-family: var(--f-mono);
+    font-size: var(--t-xs);
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--quiet);
+  }
+
+  /* The dot mark: three dots, the site's small signature. */
+  .dots {
+    display: inline-block;
+    width: 1.1em;
+    height: 0.35em;
+    background: radial-gradient(circle, currentColor 0 1.5px, transparent 2px) 0 50% / 0.38em 0.35em repeat-x;
+    vertical-align: middle;
+    color: var(--pencil);
+  }
+
+  /* Margin note: a blue-pencil annotation beside the text. */
+  .note {
+    font-family: var(--f-mono);
+    font-size: var(--t-sm);
+    line-height: 1.55;
+    color: var(--quiet);
+    border-left: 1.5px solid var(--pencil);
+    padding-left: var(--space-3);
+  }
+  .note b { display: block; color: var(--pencil); font-weight: 500; font-size: var(--t-xs); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: var(--space-1); }
+
+  /*
+   * Notes and variants written for one reading show only in that reading.
+   * <html data-read> is set before first paint, so there is no flash.
+   */
+  html[data-read='frontend'] [data-for]:not([data-for~='frontend']),
+  html[data-read='people'] [data-for]:not([data-for~='people']),
+  html[data-read='design'] [data-for]:not([data-for~='design']) { display: none !important; }
+
+  .button {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 0.6em 1em;
+    border: 1px solid var(--ink);
+    border-radius: 2px;
+    background: transparent;
+    color: var(--ink);
+    font-family: var(--f-ui);
+    font-size: var(--t-sm);
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
+  }
+  .button:hover { background: var(--ink); color: var(--paper); }
+  .button--primary { background: var(--ink); color: var(--paper); }
+  .button--primary:hover { background: var(--pencil); border-color: var(--pencil); color: var(--paper); }
+
+  /* Visible placeholder for facts that are still missing. */
+  .placeholder {
+    border: 1px dashed var(--placeholder);
+    background: var(--placeholder-bg);
+    color: var(--ink);
+    padding: var(--space-3) var(--space-4);
+    font-size: var(--t-sm);
+  }
+  .placeholder .label { color: var(--placeholder); }
+  .placeholder ul { margin-top: var(--space-2); padding-left: 1.1em; }
+}
+
+@layer utilities {
+  .visually-hidden {
+    position: absolute !important;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0);
+    white-space: nowrap; border: 0;
+  }
+  .tabular { font-variant-numeric: tabular-nums; }
+}

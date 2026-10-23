@@ -1,0 +1,86 @@
+---
+import '@fontsource-variable/newsreader/opsz.css';
+import '@fontsource-variable/newsreader/opsz-italic.css';
+import '@fontsource-variable/schibsted-grotesk/index.css';
+import '@fontsource/ibm-plex-mono/latin-400.css';
+import '@fontsource/ibm-plex-mono/latin-500.css';
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { defaultRegister, person, registers } from '../data/site';
+
+interface Props {
+  /** Page title; the site name is appended. */
+  title?: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+const fullTitle = title ? `${title} · ${person.name}` : `${person.name} · ${person.role}`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL('/og.png', Astro.site);
+const registerIds = registers.map((r) => r.id);
+---
+
+<!doctype html>
+<html lang="en" data-read={defaultRegister}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#f1f3f0" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#121418" media="(prefers-color-scheme: dark)" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <!-- Restore the reader's chosen reading and theme before first paint. -->
+    <script is:inline define:vars={{ registerIds }}>
+      try {
+        const url = new URL(location.href).searchParams.get('read');
+        const saved = url && registerIds.includes(url) ? url : localStorage.getItem('read');
+        if (saved && registerIds.includes(saved)) {
+          document.documentElement.dataset.read = saved;
+          if (url) localStorage.setItem('read', saved);
+        }
+        const theme = localStorage.getItem('theme');
+        if (theme === 'light' || theme === 'dark') document.documentElement.dataset.theme = theme;
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <Header />
+    <main id="main" class="page">
+      <slot />
+    </main>
+    <Footer />
+    <p class="visually-hidden" aria-live="polite" id="read-status"></p>
+    <script>
+      import '../scripts/register';
+      import '../scripts/theme';
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  @view-transition { navigation: auto; }
+
+  .skip {
+    position: absolute;
+    left: var(--gutter);
+    top: -3rem;
+    padding: var(--space-2) var(--space-3);
+    background: var(--ink);
+    color: var(--paper);
+    z-index: 10;
+  }
+  .skip:focus { top: var(--space-2); }
+</style>

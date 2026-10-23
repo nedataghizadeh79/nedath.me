@@ -1,0 +1,111 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import ProjectRow from '../components/ProjectRow.astro';
+import Placeholder from '../components/Placeholder.astro';
+import portrait from '../assets/portrait.jpg';
+import { abstract, cvFile, person, registers } from '../data/site';
+import { featuredFor } from '../data/work';
+
+/** Evidence lines for the margin, one set per reading. */
+const marginNotes = {
+  frontend: ['33 merged PRs', '11k+ npm downloads a year', '4 roles since 2022'],
+  people: ['Client workshops at Serity', 'Student association director', 'Persian, English, German'],
+  design: ['Figma to React', 'CHI 2024 workshop paper', 'EACL 2026 Best Resource Paper (co-author)'],
+};
+---
+
+<Base description="Frontend developer in Bonn building React and TypeScript interfaces, with a background in UI/UX design and a strong people side.">
+  <section class="abstract" aria-labelledby="intro">
+    <div class="text stack" style="--gap: var(--space-5)">
+      <h1 id="intro" class="label">{person.name} · {person.role} · {person.location}</h1>
+
+      {registers.map((r) => (
+        <p class="statement" data-for={r.id}>{abstract[r.id].statement}</p>
+      ))}
+
+      {registers.map((r) => (
+        <ul role="list" class="proofs" data-for={r.id} aria-label="Evidence">
+          {abstract[r.id].proofs.map((proof) => (
+            <li><span class="dots" aria-hidden="true"></span>{proof}</li>
+          ))}
+        </ul>
+      ))}
+
+      <p class="now">
+        Front-end developer at ZB MED and M.Sc. Computer Science student at the University of Bonn,
+        graduating September 2027. Open to frontend, UI/UX and people-focused roles.
+      </p>
+      <Placeholder items={['What you are looking for and from when: e.g. working student now, full-time from autumn 2027']} />
+
+      <div class="actions">
+        <a class="button button--primary" href={cvFile.href} download>Download CV</a>
+        <a class="button" href="#contact">Contact</a>
+        <a class="button" href="/work/">All work</a>
+      </div>
+    </div>
+
+    <figure class="portrait">
+      <Image src={portrait} alt={`Portrait of ${person.name}`} widths={[320, 480, 640]} sizes="(min-width: 60rem) 18rem, 60vw" loading="eager" fetchpriority="high" />
+      {registers.map((r) => (
+        <figcaption class="note" data-for={r.id}>
+          <b>In numbers</b>
+          {marginNotes[r.id].map((n) => <span class="fact">{n}</span>)}
+        </figcaption>
+      ))}
+    </figure>
+  </section>
+
+  <section class="section" aria-labelledby="selected">
+    <div class="head">
+      <h2 id="selected">Selected work</h2>
+      <a href="/work/">See the full index →</a>
+    </div>
+    {registers.map((r) => (
+      <ul role="list" class="list" data-for={r.id}>
+        {featuredFor(r.id).map((p) => <ProjectRow project={p} />)}
+      </ul>
+    ))}
+  </section>
+</Base>
+
+<style>
+  .abstract {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 18rem;
+    gap: var(--space-7);
+    padding-block: var(--space-8) var(--space-7);
+    align-items: start;
+  }
+  .statement {
+    font-family: var(--f-voice);
+    font-size: var(--t-xl);
+    font-weight: 380;
+    line-height: 1.14;
+    letter-spacing: -0.018em;
+    max-width: 27ch;
+    text-wrap: balance;
+    view-transition-name: statement;
+  }
+  .proofs { display: grid; gap: var(--space-2); max-width: 60ch; view-transition-name: proofs; }
+  .proofs li { display: grid; grid-template-columns: 1.6rem 1fr; align-items: baseline; }
+  .proofs .dots { margin-top: -0.15em; }
+  .now { color: var(--quiet); max-width: 60ch; }
+  .actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+
+  .portrait { display: grid; gap: var(--space-4); }
+  .portrait img { aspect-ratio: 4 / 5; object-fit: cover; width: 100%; filter: saturate(0.92); }
+  .portrait .note { display: grid; gap: var(--space-1); }
+  .portrait .note[data-for] { view-transition-name: margin-note; }
+  .fact { color: var(--ink); }
+
+  .head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: var(--space-3); margin-bottom: var(--space-5); }
+  .head h2 { font-size: var(--t-xl); }
+  .head a { font-size: var(--t-sm); font-weight: 600; }
+  .list { view-transition-name: selected; }
+
+  @media (max-width: 52rem) {
+    .abstract { grid-template-columns: minmax(0, 1fr); gap: var(--space-6); padding-block-start: var(--space-6); }
+    .portrait { grid-template-columns: 8rem 1fr; align-items: end; grid-row: 1; }
+  }
+</style>

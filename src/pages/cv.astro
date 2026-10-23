@@ -1,0 +1,154 @@
+---
+import Base from '../layouts/Base.astro';
+import { cvFile, person, profiles } from '../data/site';
+import { certificates, cvSkills, education, experience, languages, publications, volunteering } from '../data/profile';
+import { projects } from '../data/work';
+
+/** Projects listed on the CV, in this order. */
+const cvProjects = ['terminology-widgets', 'hotel-booking', 'informal-formal-converter']
+  .map((slug) => projects.find((p) => p.slug === slug)!)
+  .filter(Boolean);
+
+/** Profile URL without the protocol, for print. */
+const bare = (href: string) => href.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
+---
+
+<Base title="CV" description="CV of Neda Taghizade Serajeh: frontend developer, M.Sc. Computer Science student at the University of Bonn.">
+  <div class="screen-only bar">
+    <p>The same CV as the PDF, without a phone number.</p>
+    <a class="button button--primary" href={cvFile.href} download>Download PDF</a>
+  </div>
+
+  <article class="cv">
+    <header class="cv-head">
+      <div>
+        <h1>{person.name}</h1>
+        <p>M.Sc. Computer Science student · Expected graduation Sep 2027 · {person.location}</p>
+      </div>
+      <ul role="list" class="contact">
+        <li><a href={`mailto:${person.email}`}>{person.email}</a></li>
+        <li><a href={person.url}>{bare(person.url)}</a></li>
+        {profiles.map((p) => <li><a href={p.href}>{p.label === 'Google Scholar' ? 'Google Scholar' : bare(p.href)}</a></li>)}
+      </ul>
+    </header>
+
+    <section>
+      <h2>Education</h2>
+      {education.map((e) => (
+        <div class="item">
+          <div class="line"><strong>{e.school}</strong><span class="tabular">{e.dates}</span></div>
+          <div class="line"><span>{e.degree}</span><span>Grade: {e.grade}</span></div>
+        </div>
+      ))}
+    </section>
+
+    <section>
+      <h2>Work experience</h2>
+      {experience.map((job) => (
+        <div class="item">
+          <div class="line"><strong>{job.org.split(' – ')[0]}</strong><span class="tabular">{job.dates}</span></div>
+          <div class="line"><em>{job.title}</em><span>{job.place}</span></div>
+          <ul>{job.points.map((pt) => <li>{pt}</li>)}</ul>
+        </div>
+      ))}
+    </section>
+
+    <section>
+      <h2>Publications</h2>
+      {publications.map((pub) => (
+        <div class="item">
+          <div class="line"><a href={pub.href}><strong>{pub.title}</strong></a><span>{pub.venue}</span></div>
+          <div class="line"><span>{pub.authors}</span>{pub.award && <span>{pub.award}</span>}</div>
+        </div>
+      ))}
+    </section>
+
+    <section>
+      <h2>Technical skills</h2>
+      <dl class="pairs">
+        {cvSkills.map((s) => <div><dt>{s.group}:</dt><dd>{s.items}</dd></div>)}
+      </dl>
+    </section>
+
+    <section>
+      <h2>Selected projects</h2>
+      {cvProjects.map((p) => (
+        <div class="item">
+          <div class="line"><strong>{p.title}</strong><span class="tabular">{p.years}</span></div>
+          <p>{p.summary}</p>
+        </div>
+      ))}
+    </section>
+
+    <section>
+      <h2>Leadership</h2>
+      {volunteering.map((v) => (
+        <div class="item">
+          <div class="line"><strong>{v.title}, {v.org}</strong><span class="tabular">{v.dates}</span></div>
+          <p>{v.points[0]}</p>
+        </div>
+      ))}
+    </section>
+
+    <section class="split">
+      <div>
+        <h2>Certificates</h2>
+        <ul class="plain">{certificates.map((c) => <li>{c.name}, {c.date}</li>)}</ul>
+      </div>
+      <div>
+        <h2>Languages</h2>
+        <ul class="plain">{languages.map((l) => <li>{l.name}: {l.level}</li>)}</ul>
+      </div>
+    </section>
+
+    <p class="refs">Reference letters from ZB MED and Serity are available on request.</p>
+  </article>
+</Base>
+
+<style>
+  .bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-3); padding-block: var(--space-6) var(--space-4); color: var(--quiet); }
+
+  .cv {
+    background: var(--paper-raised);
+    border: 1px solid var(--rule);
+    padding: clamp(1.25rem, 4vw, 3rem);
+    font-size: 0.95rem;
+    line-height: 1.45;
+    display: grid;
+    gap: var(--space-5);
+  }
+  .cv-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-4); padding-bottom: var(--space-4); border-bottom: 1px solid var(--ink); }
+  .cv-head h1 { font-size: var(--t-xl); }
+  .cv-head p { color: var(--quiet); }
+  .contact { display: grid; gap: 2px; font-family: var(--f-mono); font-size: var(--t-xs); text-align: right; }
+  .contact a { display: inline-block; padding-block: 4px; }
+  .cv h2 { font-family: var(--f-mono); font-size: var(--t-xs); font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--pencil); padding-bottom: var(--space-1); border-bottom: 1px solid var(--rule); margin-bottom: var(--space-3); }
+  section { display: grid; gap: var(--space-3); }
+  .item { display: grid; gap: 2px; break-inside: avoid; }
+  .line { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0 var(--space-4); }
+  .line span:last-child { color: var(--quiet); font-size: var(--t-sm); }
+  .item ul { margin-top: 4px; padding-left: 1.1em; display: grid; gap: 2px; }
+  .item a { color: var(--ink); text-decoration: none; }
+  .pairs div { display: flex; gap: var(--space-2); }
+  .pairs dt { font-weight: 600; min-width: 6rem; }
+  .split { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-6); }
+  .plain { padding-left: 1.1em; display: grid; gap: 2px; }
+  .refs { color: var(--quiet); font-size: var(--t-sm); }
+
+  @media (max-width: 40rem) {
+    .contact { text-align: left; }
+    .split { grid-template-columns: minmax(0, 1fr); }
+  }
+
+  @media print {
+    @page { size: A4; margin: 13mm 14mm; }
+    :global(html) { --paper: #fff; --paper-raised: #fff; --ink: #111; --quiet: #444; --pencil: #2b50d8; --rule: #ccc; }
+    :global(.masthead), :global(.foot), :global(.skip), .screen-only { display: none !important; }
+    :global(main.page) { padding: 0; max-width: none; }
+    .cv { border: 0; padding: 0; font-size: 9.6pt; gap: 10pt; background: #fff; }
+    .cv-head h1 { font-size: 20pt; }
+    .cv h2 { margin-bottom: 4pt; break-after: avoid; }
+    .contact a { padding-block: 0; }
+    section { gap: 6pt; }
+  }
+</style>

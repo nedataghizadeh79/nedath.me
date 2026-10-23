@@ -1,0 +1,85 @@
+---
+import RegisterSwitch from './RegisterSwitch.astro';
+import { person } from '../data/site';
+
+const links = [
+  { href: '/work/', label: 'Work' },
+  { href: '/about/', label: 'About' },
+  { href: '/cv/', label: 'CV' },
+];
+const path = Astro.url.pathname;
+/** True when the link is the current page or one of its children. */
+const isCurrent = (href: string) => path === href || (href !== '/' && path.startsWith(href));
+---
+
+<header class="masthead page">
+  <a class="name" href="/" aria-label={`${person.name}, home`}>
+    {person.name}
+  </a>
+  <nav aria-label="Main">
+    <ul role="list">
+      {links.map((l) => (
+        <li><a href={l.href} aria-current={isCurrent(l.href) ? 'page' : undefined}>{l.label}</a></li>
+      ))}
+    </ul>
+  </nav>
+  <div class="controls">
+    <RegisterSwitch />
+    <button class="theme" type="button" data-theme-toggle aria-label="Switch colour theme">
+      <span aria-hidden="true"></span>
+    </button>
+  </div>
+</header>
+
+<style>
+  .masthead {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: baseline;
+    gap: var(--space-3) var(--space-6);
+    padding-block: var(--space-5) var(--space-4);
+    border-bottom: 1px solid var(--rule);
+  }
+  .name {
+    font-family: var(--f-voice);
+    font-size: var(--t-md);
+    color: var(--ink);
+    text-decoration: none;
+    letter-spacing: -0.01em;
+  }
+  nav ul { display: flex; gap: var(--space-5); }
+  nav a {
+    font-size: var(--t-sm);
+    font-weight: 500;
+    color: var(--quiet);
+    text-decoration: none;
+    padding-block: var(--space-1);
+  }
+  nav a:hover, nav a[aria-current='page'] { color: var(--ink); }
+  nav a[aria-current='page'] { box-shadow: inset 0 -1.5px 0 var(--pencil); }
+  .controls { display: flex; align-items: center; gap: var(--space-4); }
+  .theme {
+    width: 1.75rem;
+    height: 1.75rem;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--rule);
+    border-radius: 50%;
+    background: none;
+    cursor: pointer;
+  }
+  /* Half-filled circle: the classic light/dark glyph, drawn in CSS. */
+  .theme span {
+    width: 0.8rem;
+    height: 0.8rem;
+    border-radius: 50%;
+    border: 1.5px solid var(--ink);
+    background: linear-gradient(90deg, var(--ink) 50%, transparent 50%);
+  }
+
+  @media (max-width: 52rem) {
+    .masthead { grid-template-columns: 1fr auto; }
+    nav { grid-column: 1 / -1; grid-row: 2; }
+    .controls { grid-column: 1 / -1; grid-row: 3; justify-content: space-between; }
+  }
+</style>

@@ -1,0 +1,164 @@
+---
+import Base from '../../layouts/Base.astro';
+import SourceLinks from '../../components/SourceLinks.astro';
+import Placeholder from '../../components/Placeholder.astro';
+import { registers } from '../../data/site';
+import { caseStudies, type Project } from '../../data/work';
+
+export function getStaticPaths() {
+  return caseStudies.map((project, i) => ({
+    params: { slug: project.slug },
+    props: { project, next: caseStudies[(i + 1) % caseStudies.length] },
+  }));
+}
+
+interface Props {
+  project: Project;
+  next: Project;
+}
+
+const { project: p, next } = Astro.props;
+const cs = p.caseStudy!;
+const roleLabels = p.roles.map((id) => registers.find((r) => r.id === id)?.label).join(', ');
+---
+
+<Base title={p.title} description={p.summary}>
+  <article>
+    <header class="head">
+      <p class="label"><span class="code">{p.code}</span> · Case study</p>
+      <h1>{p.title}</h1>
+      <p class="summary">{p.summary}</p>
+      <dl class="facts">
+        <div><dt>Where</dt><dd>{p.org}</dd></div>
+        <div><dt>When</dt><dd class="tabular">{p.years}</dd></div>
+        <div><dt>Role</dt><dd>{roleLabels}</dd></div>
+        <div><dt>Type</dt><dd>{p.type}</dd></div>
+      </dl>
+      <SourceLinks sources={p.sources} id="head-src" />
+    </header>
+
+    <section class="manuscript block" aria-labelledby="context">
+      <div class="stack">
+        <h2 id="context">Context</h2>
+        {cs.context.map((para) => <p>{para}</p>)}
+      </div>
+    </section>
+
+    <section class="block" aria-labelledby="ledger">
+      <h2 id="ledger">Who did what</h2>
+      <div class="ledger">
+        <div class="stack" style="--gap: var(--space-3)">
+          <h3 class="label">My part</h3>
+          <ul role="list" class="marked">{cs.myPart.map((item) => <li>{item}</li>)}</ul>
+        </div>
+        <div class="stack" style="--gap: var(--space-3)">
+          <h3 class="label">Team part</h3>
+          <ul role="list" class="marked quiet">{cs.teamPart.map((item) => <li>{item}</li>)}</ul>
+        </div>
+      </div>
+    </section>
+
+    {cs.diagram && (
+      <section class="block" aria-labelledby="diagram">
+        <h2 id="diagram">{cs.diagram.title}</h2>
+        <ol class="flow" role="list">
+          {cs.diagram.steps.map((step, i) => (
+            <li>
+              <span class="step-n tabular" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+              <strong>{step.label}</strong>
+              <span>{step.detail}</span>
+            </li>
+          ))}
+        </ol>
+      </section>
+    )}
+
+    {cs.decisions.length > 0 && (
+      <section class="block" aria-labelledby="decisions">
+        <h2 id="decisions">Decisions</h2>
+        <div class="stack" style="--gap: var(--space-6)">
+          {cs.decisions.map((d) => (
+            <div class="manuscript">
+              <div class="stack" style="--gap: var(--space-2)">
+                <h3>{d.title}</h3>
+                <p>{d.body}</p>
+              </div>
+              {d.note && (
+                <p class="note margin" data-for={d.note.for}>
+                  <b>Note for {registers.find((r) => r.id === d.note!.for)?.label} readers</b>
+                  {d.note.text}
+                </p>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <section class="manuscript block" aria-labelledby="outcome">
+      <div class="stack">
+        <h2 id="outcome">Outcome</h2>
+        <ul role="list" class="marked">{cs.outcome.map((item) => <li>{item}</li>)}</ul>
+        {cs.missing && <Placeholder items={cs.missing} />}
+      </div>
+    </section>
+
+    <nav class="next" aria-label="Next case study">
+      <span class="label">Next case study</span>
+      <a href={`/work/${next.slug}/`}>{next.title} →</a>
+    </nav>
+  </article>
+</Base>
+
+<style>
+  .head { display: grid; gap: var(--space-4); padding-block: var(--space-8) var(--space-6); max-width: 52rem; }
+  .code { color: var(--pencil); }
+  h1 { font-size: var(--t-xxl); }
+  .summary { font-family: var(--f-voice); font-size: var(--t-lg); line-height: 1.3; max-width: 40ch; }
+  .facts { display: flex; flex-wrap: wrap; gap: var(--space-3) var(--space-6); }
+  .facts dt { font-family: var(--f-mono); font-size: var(--t-xs); text-transform: uppercase; letter-spacing: 0.08em; color: var(--quiet); }
+  .facts dd { font-weight: 500; }
+
+  .block { padding-block: var(--space-7); border-top: 1px solid var(--rule); }
+  .block > h2, .block .stack > h2 { font-size: var(--t-xl); margin-bottom: var(--space-4); }
+  .block p { max-width: var(--measure); }
+  h3:not(.label) { font-size: var(--t-lg); }
+
+  .ledger { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-6); }
+  .marked { display: grid; gap: var(--space-2); }
+  .marked li { position: relative; padding-left: 1.4rem; max-width: 60ch; }
+  .marked li::before {
+    content: '';
+    position: absolute;
+    left: 0.2rem;
+    top: 0.68em;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--pencil);
+  }
+  .marked.quiet li { color: var(--quiet); }
+  .marked.quiet li::before { background: var(--quiet); }
+
+  .flow { display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: 0; counter-reset: step; }
+  .flow li {
+    display: grid;
+    gap: var(--space-1);
+    align-content: start;
+    padding: var(--space-4);
+    border: 1px solid var(--rule);
+    margin: 0 -1px -1px 0;
+    background: var(--paper-raised);
+  }
+  .step-n { font-family: var(--f-mono); font-size: var(--t-xs); color: var(--pencil); }
+  .flow strong { font-family: var(--f-voice); font-size: var(--t-md); font-weight: 500; }
+  .flow span:last-child { font-size: var(--t-sm); color: var(--quiet); }
+
+  .next { display: grid; gap: var(--space-2); padding-block: var(--space-7); border-top: 1px solid var(--rule); }
+  .next a { font-family: var(--f-voice); font-size: var(--t-xl); text-decoration: none; }
+  .next a:hover { text-decoration: underline; }
+
+  @media (max-width: 44rem) {
+    .ledger { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>
