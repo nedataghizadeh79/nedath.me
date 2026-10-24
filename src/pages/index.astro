@@ -28,6 +28,11 @@ const spoken = `${intro.lead} ${resting.replace(/\.$/, '')}, ${rewrites.map((w) 
       </span>
     </p>
 
+    <div class="story">
+      {intro.story.map((para) => <p>{para}</p>)}
+      <p class="art">{intro.art.text} <a href={intro.art.href}>{intro.art.link} →</a></p>
+    </div>
+
     <div class="portrait">
       <Print src={homePhoto.src} alt={homePhoto.alt} tilt={2.2} sizes="(min-width: 60rem) 22rem, 40vw" loading="eager" />
     </div>
@@ -155,9 +160,22 @@ const spoken = `${intro.lead} ${resting.replace(/\.$/, '')}, ${rewrites.map((w) 
     cursor: pointer;
   }
 
+  /* The first impression: who I am, right under the statement. */
+  .story {
+    grid-column: 1 / 8;
+    grid-row: 3;
+    display: grid;
+    gap: var(--space-4);
+    margin-top: var(--space-5);
+    font-size: var(--t-md);
+    line-height: 1.6;
+    max-width: 60ch;
+  }
+  .art { font-family: var(--f-voice); font-style: italic; }
+  .art a { font-style: normal; font-family: var(--f-hand); font-size: 1.45em; white-space: nowrap; }
   .proofs {
     grid-column: 1 / 8;
-    grid-row: 3 / 5;
+    grid-row: 4 / 6;
     margin-top: var(--space-7);
     padding: 0;
     list-style: none;
@@ -186,7 +204,7 @@ const spoken = `${intro.lead} ${resting.replace(/\.$/, '')}, ${rewrites.map((w) 
     .portrait { grid-column: 2; grid-row: 3; margin-top: var(--space-6); }
     .margin-note { grid-column: 1; grid-row: 3; align-self: end; padding: 0 0 var(--space-3); }
     .margin-note :global(.note-arrow) { display: none; }
-    .proofs, .after { grid-column: 1 / -1; grid-row: auto; }
+    .story, .proofs, .after { grid-column: 1 / -1; grid-row: auto; }
     .proofs { margin-top: var(--space-6); }
   }
 </style>

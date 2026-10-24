@@ -15,6 +15,10 @@ interface Props {
   /** Tilt in degrees; small values look natural (−3 to 3). */
   tilt?: number;
   develop?: boolean;
+  /** Show the photo in colour, as for artworks. */
+  color?: boolean;
+  /** Keep the photo's own proportions instead of the 4:5 portrait crop. */
+  natural?: boolean;
   /** Handwritten caption on the print's bottom border. */
   caption?: string;
   sizes: string;
@@ -22,10 +26,10 @@ interface Props {
   class?: string;
 }
 
-const { src, alt, tone, tilt = 2, develop = false, caption, sizes, loading = 'lazy', class: className } = Astro.props;
+const { src, alt, tone, tilt = 2, develop = false, color = false, natural = false, caption, sizes, loading = 'lazy', class: className } = Astro.props;
 ---
 
-<figure class:list={['print', { develop }, className]} style={`--tilt: ${tilt}deg`}>
+<figure class:list={['print', { develop, color, natural }, className]} style={`--tilt: ${tilt}deg`}>
   <span class="tape" aria-hidden="true"></span>
   <div class="photo">
     <Image class="base" src={src} alt={alt} widths={[320, 480, 640, 800]} sizes={sizes} loading={loading} fetchpriority={loading === 'eager' ? 'high' : undefined} />
@@ -47,6 +51,8 @@ const { src, alt, tone, tilt = 2, develop = false, caption, sizes, loading = 'la
   .photo { position: relative; }
   .print img { aspect-ratio: 4 / 5; object-fit: cover; width: 100%; filter: grayscale(1) contrast(1.06); transition: filter 600ms var(--ease), opacity 700ms var(--ease); }
   /* The tinted version sits on top, hidden until the print develops. */
+  .color img { filter: none; }
+  .natural img { aspect-ratio: auto; height: auto; }
   .print .tone { position: absolute; inset: 0; height: 100%; opacity: 0; filter: none; }
   .develop:hover .base, .develop:focus-within .base { filter: none; }
   .develop:hover .tone, .develop:focus-within .tone { opacity: 1; }

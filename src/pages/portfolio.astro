@@ -1,0 +1,112 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Print from '../components/Print.astro';
+import { allWorks, series, studio } from '../data/art';
+
+/** A loose, hand-placed look: each print gets its own small tilt. */
+const tilts = [-1.8, 1.4, -0.9, 2.1, -1.4, 0.8];
+/** Index of a work in `allWorks`, so every print opens the right photo in the viewer. */
+const indexOf = (src: ImageMetadata) => allWorks.findIndex((w) => w.src === src);
+---
+
+<Base title="Portfolio" description="Artida, the handmade art of Neda Taghizade Serajeh: relief panels, Persian calligraphy, dotwork drawings, resin purses and objects for home.">
+  <PageHeader label="Portfolio" title={`${studio.name} studio`} lead={studio.meaning}>
+    {studio.story.map((para) => <p class="story">{para}</p>)}
+    <nav class="series-nav" aria-label="Series">
+      {series.map((s) => <a href={`#${s.id}`}>{s.title}</a>)}
+    </nav>
+  </PageHeader>
+
+  {series.map((s) => (
+    <section class="series" id={s.id} aria-labelledby={`${s.id}-title`}>
+      <div class="series-text">
+        <p class="label">{s.works.length} works</p>
+        <h2 id={`${s.id}-title`}>{s.title}</h2>
+        <p>{s.text}</p>
+      </div>
+      <ul role="list" class="works">
+        {s.works.map((w, i) => (
+          <li class="work">
+            <Print src={w.src} alt="" color natural tilt={tilts[i % tilts.length]} caption={w.caption} sizes="(min-width: 60rem) 18rem, 45vw" />
+            <button type="button" class="open" data-frame={indexOf(w.src)} aria-label={`Open larger: ${w.alt}`}></button>
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+
+  <dialog class="viewer" data-viewer aria-label="Artwork viewer">
+    <div class="viewer-panel">
+      <form method="dialog" class="viewer-bar">
+        <span class="label" data-viewer-label></span>
+        <button class="viewer-close" aria-label="Close">Close ✕</button>
+      </form>
+      {allWorks.map((w, i) => (
+        <Image class="viewer-img" data-viewer-img={i} src={w.src} alt={w.alt} widths={[800, 1200]} sizes="min(90vw, 48rem)" loading="lazy" hidden />
+      ))}
+      <div class="viewer-nav">
+        <button type="button" data-step="-1">← Previous</button>
+        <button type="button" data-step="1">Next →</button>
+      </div>
+    </div>
+  </dialog>
+</Base>
+
+<script>
+  import { startViewer } from '../scripts/viewer';
+  startViewer('Work');
+</script>
+
+<style>
+  .story { max-width: var(--measure); }
+  .series-nav { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-5); padding-top: var(--space-2); }
+  .series-nav a { font-family: var(--f-hand); font-size: 1.5rem; line-height: 1; text-decoration: none; }
+  .series-nav a:hover { text-decoration: underline wavy; }
+
+  .series {
+    display: grid;
+    grid-template-columns: minmax(12rem, 18rem) minmax(0, 1fr);
+    gap: var(--space-7);
+    padding-block: var(--space-8);
+    border-top: 1px solid var(--rule);
+    scroll-margin-top: var(--space-5);
+  }
+  .series-text { position: sticky; top: var(--space-6); align-self: start; display: grid; gap: var(--space-3); }
+  .series-text h2 { font-size: var(--t-xl); letter-spacing: -0.02em; font-weight: 400; }
+  .series-text p:last-child { color: var(--quiet); }
+
+  /* Prints laid out in columns, each at its own proportions. */
+  .works { columns: 3 14rem; column-gap: var(--space-6); }
+  .work { position: relative; break-inside: avoid; margin-bottom: var(--space-7); }
+  .work :global(.print) { transition: transform 400ms var(--ease); }
+  .work:hover :global(.print), .work:focus-within :global(.print) { transform: rotate(0deg) scale(1.03); }
+  .open { position: absolute; inset: 0; z-index: 2; border: 0; background: none; cursor: zoom-in; }
+  .open:focus-visible { outline-offset: 6px; }
+
+  .viewer {
+    width: min(94vw, 52rem);
+    max-height: 94vh;
+    padding: 0;
+    border: 0;
+    background: var(--grain), var(--paper);
+    color: var(--ink);
+    box-shadow: 0 20px 60px rgb(0 0 0 / 0.35);
+  }
+  .viewer-panel { padding: var(--space-4); }
+  .viewer::backdrop { background: rgb(10 11 13 / 0.78); }
+  .viewer-bar, .viewer-nav { display: flex; justify-content: space-between; align-items: center; gap: var(--space-3); }
+  .viewer-bar { margin-bottom: var(--space-3); }
+  .viewer-nav { margin-top: var(--space-3); }
+  .viewer :global(.viewer-img) { width: 100%; max-height: 76vh; object-fit: contain; }
+  .viewer button { border: 1px solid var(--rule); background: none; padding: var(--space-2) var(--space-3); cursor: pointer; font-size: var(--t-sm); }
+  .viewer button:hover { border-color: var(--ink); }
+
+  @media (max-width: 52rem) {
+    .series { grid-template-columns: minmax(0, 1fr); gap: var(--space-5); padding-block: var(--space-7); }
+    .series-text { position: static; }
+    .works { columns: 2 9rem; column-gap: var(--space-5); }
+  }
+</style>

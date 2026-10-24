@@ -43,6 +43,17 @@ export const intro = {
   /** The word in `lead` circled in blue pencil on load. */
   circled: 'people',
   edits: ['React code.', 'clear user stories.', 'tested screens.'],
+  /** A short introduction right under the statement: the first impression. */
+  story: [
+    'I’m a frontend developer in Bonn and an M.Sc. Computer Science student at the University of Bonn. At ZB MED I build open-source React widgets that research apps use to show ontology data. Before that I worked on Digikala’s Seller Center in Tehran, and designed and built interfaces at AYOT.',
+    'I enjoy work where design, code and people overlap: designing a screen and then building it, turning a client’s needs into user stories, or presenting research to a mixed audience. I studied Computer Engineering at Sharif University of Technology.',
+  ],
+  /** One line about art, linking to the Portfolio page. */
+  art: {
+    text: 'I also love making art by hand: relief panels, Persian calligraphy and dotwork drawings.',
+    link: 'See my art portfolio',
+    href: '/portfolio/',
+  },
   /** Handwritten margin note beside the statement. */
   note: 'designs it, builds it, explains it',
   proofs: [
