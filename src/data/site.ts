@@ -8,7 +8,7 @@ export const person = {
   shortName: 'Neda',
   /** Spelling used on published papers, shown next to them. */
   publishedAs: 'N. Taghizadeh Serajeh',
-  role: 'Frontend developer',
+  role: 'Front-end developer and UI/UX designer',
   location: 'Bonn, Germany',
   email: 'nedath1378@gmail.com',
   url: 'https://neda.page',
@@ -60,6 +60,6 @@ export const intro = {
     '33 merged pull requests in terminology-service-suite, an open-source widget library with 11k+ npm downloads a year',
     'Migrated Digikala’s Seller Center pages from Twig to reusable React and TypeScript components',
     'Designed the DALL-E artist-commission platform in Figma, then built it in React with my colleagues',
-    'Turned client requirements into user stories and helped run IT workshops at Serity',
+    'Turned client requirements into user stories for ServiceNow projects at Serity, and became a ServiceNow Certified System Administrator',
   ],
 };

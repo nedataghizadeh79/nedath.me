@@ -5,10 +5,19 @@ import Print from '../components/Print.astro';
 import { aboutPhoto } from '../data/album';
 import { person } from '../data/site';
 import { certificates, education, experience, languages, outsideWork, publications, skills, volunteering } from '../data/profile';
+
+/** Publications as scholarly articles, linked to the Person entity. */
+const publicationSchema = publications.map((pub) => ({
+  '@type': 'ScholarlyArticle',
+  headline: pub.title,
+  url: pub.href,
+  author: { '@id': new URL('/#person', Astro.site).href },
+  ...(pub.award ? { award: pub.award } : {}),
+}));
 ---
 
-<Base title="About" description="About Neda Taghizade Serajeh: experience, education, publications, skills with evidence, and languages.">
-  <PageHeader label="About" title="Where people and code meet" lead="My experience, education and publications, and the skills behind them.">
+<Base title="About" kind="profile" crumbs={[{ name: 'About', path: '/about/' }]} schema={publicationSchema} description="About Neda Taghizade Serajeh (Taghizadeh): front-end developer at ZB MED, UI/UX designer, ServiceNow technical consultant, M.Sc. at the University of Bonn.">
+  <PageHeader label="About" title="Where people and code meet" lead="My experience, education and publications, and the skills behind them. My name is also written Neda Taghizadeh Serajeh.">
     <Fragment slot="aside">
       <a class="album-link" href="/album/">
         <Print src={aboutPhoto.src} alt={aboutPhoto.alt} tilt={-2} sizes="(min-width: 52rem) 20rem, 17rem" loading="eager" />

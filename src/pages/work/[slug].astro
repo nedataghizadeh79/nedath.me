@@ -19,9 +19,19 @@ interface Props {
 
 const { project: p, next } = Astro.props;
 const cs = p.caseStudy!;
+
+/** The case study as a creative work by Neda, for search engines. */
+const caseStudySchema = {
+  '@type': 'CreativeWork',
+  name: p.title,
+  description: p.summary,
+  url: new URL(`/work/${p.slug}/`, Astro.site).href,
+  author: { '@id': new URL('/#person', Astro.site).href },
+  sourceOrganization: p.org,
+};
 ---
 
-<Base title={p.title} description={p.summary}>
+<Base title={p.title} kind="article" crumbs={[{ name: 'Work', path: '/work/' }, { name: p.title, path: `/work/${p.slug}/` }]} schema={[caseStudySchema]} description={p.summary}>
   <article>
     <PageHeader label={`${p.code} · Case study`} title={p.title} lead={p.summary}>
       <dl class="facts">

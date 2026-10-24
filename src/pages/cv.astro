@@ -14,7 +14,7 @@ const cvProjects = ['terminology-widgets', 'hotel-booking', 'informal-formal-con
 const bare = (href: string) => href.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
 ---
 
-<Base title="CV" description="CV of Neda Taghizade Serajeh: frontend developer, M.Sc. Computer Science student at the University of Bonn.">
+<Base title="CV" crumbs={[{ name: 'CV', path: '/cv/' }]} description="CV of Neda Taghizade Serajeh: front-end developer (React, TypeScript), UI/UX designer and ServiceNow Certified System Administrator, M.Sc. Computer Science, University of Bonn.">
   <PageHeader label="CV" title="Curriculum vitae" lead="The same CV as the PDF, without a phone number.">
     <a class="button button--primary" href={cvFile.href} download>Download PDF</a>
   </PageHeader>

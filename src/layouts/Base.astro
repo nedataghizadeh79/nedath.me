@@ -8,18 +8,53 @@ import '@fontsource/nanum-pen-script/latin-400.css';
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { getImage } from 'astro:assets';
 import { person } from '../data/site';
+import { homePhoto } from '../data/album';
+import { breadcrumbSchema, personSchema, websiteSchema, type Crumb } from '../data/seo';
 
 interface Props {
-  /** Page title; the site name is appended. */
+  /** Page title; the site name is appended. Omit on the home page. */
   title?: string;
   description: string;
+  /** What the page is, for search engines and social previews. */
+  kind?: 'profile' | 'collection' | 'article' | 'page';
+  /** Breadcrumb trail after Home, e.g. [{ name: 'Work', path: '/work/' }]. */
+  crumbs?: Crumb[];
+  /** Extra schema.org objects that describe this page's main content. */
+  schema?: Record<string, unknown>[];
+  /** Keep the page out of search results. */
+  noindex?: boolean;
 }
 
-const { title, description } = Astro.props;
-const fullTitle = title ? `${title} · ${person.name}` : `${person.name} · ${person.role}`;
-const canonical = new URL(Astro.url.pathname, Astro.site);
-const ogImage = new URL('/og.png', Astro.site);
+const { title, description, kind = 'page', crumbs = [], schema = [], noindex = false } = Astro.props;
+const site = Astro.site!;
+const fullTitle = title ? `${title} · ${person.name}` : `${person.name} · Front-end Developer & UI/UX Designer`;
+const canonical = new URL(Astro.url.pathname, site);
+const ogImage = new URL('/og.png', site);
+const portrait = await getImage({ src: homePhoto.src, width: 640, format: 'jpg' });
+const portraitUrl = new URL(portrait.src, site).href;
+
+const pageType = { profile: 'ProfilePage', collection: 'CollectionPage', article: 'WebPage', page: 'WebPage' }[kind];
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    personSchema(site, portraitUrl),
+    websiteSchema(site),
+    {
+      '@type': pageType,
+      '@id': `${canonical.href}#page`,
+      url: canonical.href,
+      name: fullTitle,
+      description,
+      inLanguage: 'en',
+      isPartOf: { '@id': new URL('/#website', site).href },
+      ...(kind === 'profile' ? { mainEntity: { '@id': new URL('/#person', site).href } } : { about: { '@id': new URL('/#person', site).href } }),
+      ...(crumbs.length ? { breadcrumb: breadcrumbSchema(site, crumbs) } : {}),
+    },
+    ...schema,
+  ],
+};
 ---
 
 <!doctype html>
@@ -29,18 +64,35 @@ const ogImage = new URL('/og.png', Astro.site);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
+    <meta name="author" content={person.name} />
+    {noindex && <meta name="robots" content="noindex" />}
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap.xml" />
     <meta name="theme-color" content="#f1f3f0" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#121418" media="(prefers-color-scheme: dark)" />
-    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={person.name} />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:type" content={kind === 'profile' ? 'profile' : kind === 'article' ? 'article' : 'website'} />
+    {kind === 'profile' && (
+      <>
+        <meta property="profile:first_name" content="Neda" />
+        <meta property="profile:last_name" content="Taghizade Serajeh" />
+      </>
+    )}
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${person.name}, ${person.role} in Bonn`} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     <!-- Restore the reader's chosen theme before first paint. -->
     <script is:inline>
       try {

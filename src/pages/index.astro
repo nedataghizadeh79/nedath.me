@@ -7,6 +7,7 @@ import Print from '../components/Print.astro';
 import { homePhoto } from '../data/album';
 import { cvFile, intro, person } from '../data/site';
 import { featured } from '../data/work';
+import { defaultDescription } from '../data/seo';
 
 const [resting, ...rewrites] = intro.edits;
 const [beforeCircle, afterCircle] = intro.lead.split(intro.circled);
@@ -14,7 +15,7 @@ const [beforeCircle, afterCircle] = intro.lead.split(intro.circled);
 const spoken = `${intro.lead} ${resting.replace(/\.$/, '')}, ${rewrites.map((w) => w.replace(/\.$/, '')).join(' and ')}.`;
 ---
 
-<Base description="Frontend developer in Bonn building React and TypeScript interfaces, who also designs them and works closely with the people who use them.">
+<Base description={defaultDescription} kind="profile">
   <section class="hero" aria-labelledby="intro">
     <h1 id="intro" class="label byline">{person.name} · {person.role} · {person.location}</h1>
 

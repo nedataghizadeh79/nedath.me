@@ -12,7 +12,7 @@ const tilts = [-1.8, 1.4, -0.9, 2.1, -1.4, 0.8];
 const indexOf = (src: ImageMetadata) => allWorks.findIndex((w) => w.src === src);
 ---
 
-<Base title="Portfolio" description="Artida, the handmade art of Neda Taghizade Serajeh: relief panels, Persian calligraphy, dotwork drawings, resin purses and objects for home.">
+<Base title="Art portfolio" kind="collection" crumbs={[{ name: 'Portfolio', path: '/portfolio/' }]} description="Artida, the handmade art of Neda Taghizade Serajeh: relief panels, Persian calligraphy, dotwork drawings, resin purses and objects for home.">
   <PageHeader label="Portfolio" title={`${studio.name} studio`} lead={studio.meaning}>
     {studio.story.map((para) => <p class="story">{para}</p>)}
     <nav class="series-nav" aria-label="Series">
