@@ -165,29 +165,30 @@ const spoken = `${intro.lead} ${resting.replace(/\.$/, '')}, ${rewrites.map((w) 
     grid-column: 1 / 8;
     grid-row: 3;
     display: grid;
-    gap: var(--space-4);
-    margin-top: var(--space-5);
+    gap: var(--space-5);
+    margin-top: var(--space-6);
     font-size: var(--t-md);
     line-height: 1.6;
     max-width: 60ch;
   }
-  .art { font-family: var(--f-voice); font-style: italic; }
+  /* The art line gets its own small block, set apart by a rule. */
+  .art { font-family: var(--f-voice); font-style: italic; margin-top: var(--space-3); padding-top: var(--space-5); border-top: 1px solid var(--rule); }
   .art a { font-style: normal; font-family: var(--f-hand); font-size: 1.45em; white-space: nowrap; }
   .proofs {
     grid-column: 1 / 8;
     grid-row: 4 / 6;
-    margin-top: var(--space-7);
+    margin-top: var(--space-8);
     padding: 0;
     list-style: none;
     display: grid;
-    gap: var(--space-4);
+    gap: var(--space-5);
     max-width: 58ch;
   }
   .proofs li { display: grid; grid-template-columns: 2.5rem 1fr; align-items: start; }
   /* Each proof gets an editor's check mark: checked, true. */
   .proofs :global(.tick) { width: 1.4rem; height: 1.2rem; margin-top: 0.15em; }
 
-  .after { grid-column: 1 / 8; display: grid; gap: var(--space-4); margin-top: var(--space-6); }
+  .after { grid-column: 1 / 8; display: grid; gap: var(--space-5); margin-top: var(--space-8); padding-top: var(--space-6); border-top: 1px solid var(--rule); }
   .now { color: var(--quiet); max-width: 58ch; }
   .actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
 
@@ -205,6 +206,6 @@ const spoken = `${intro.lead} ${resting.replace(/\.$/, '')}, ${rewrites.map((w) 
     .margin-note { grid-column: 1; grid-row: 3; align-self: end; padding: 0 0 var(--space-3); }
     .margin-note :global(.note-arrow) { display: none; }
     .story, .proofs, .after { grid-column: 1 / -1; grid-row: auto; }
-    .proofs { margin-top: var(--space-6); }
+    .proofs { margin-top: var(--space-7); }
   }
 </style>

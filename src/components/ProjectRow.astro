@@ -33,12 +33,13 @@ const href = p.caseStudy ? `/work/${p.slug}/` : undefined;
     display: grid;
     grid-template-columns: 8.5rem minmax(0, 1fr) auto;
     gap: var(--space-2) var(--space-5);
-    padding-block: var(--space-6);
+    padding-block: var(--space-8);
     border-top: 1px solid var(--rule);
     align-items: baseline;
   }
   .code { font-family: var(--f-mono); font-size: var(--t-xs); color: var(--pencil); letter-spacing: 0.04em; }
-  .body { display: grid; gap: var(--space-2); }
+  .body { display: grid; gap: var(--space-3); }
+  .body :global(.sources) { margin-top: var(--space-2); }
   .title {
     position: relative;
     justify-self: start;
