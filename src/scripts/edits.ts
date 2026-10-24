@@ -19,6 +19,10 @@ export function startEdits() {
   const pause = document.querySelector<HTMLButtonElement>('[data-pause]');
   if (!edit || !old || !hand) return;
 
+  // Start only once, even if the script is evaluated again.
+  if (edit.dataset.running) return;
+  edit.dataset.running = 'true';
+
   const words: string[] = JSON.parse(edit.dataset.edits ?? '[]');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduce || words.length < 2) {
@@ -26,7 +30,6 @@ export function startEdits() {
     return;
   }
 
-  let index = 0;
   let paused = false;
   let visible = true;
 
@@ -46,7 +49,8 @@ export function startEdits() {
     await sleep(REST);
     for (;;) {
       await canRun();
-      const next = words[(index + 1) % words.length];
+      // The next words follow whatever is on screen now, so the edit never repeats itself.
+      const next = words[(words.indexOf(old!.textContent ?? '') + 1) % words.length];
       hand!.textContent = next;
       edit!.classList.add('is-striking');
       await sleep(STRIKE);
@@ -54,7 +58,6 @@ export function startEdits() {
       await sleep(WRITE + HOLD);
       old!.textContent = next;
       edit!.classList.remove('is-striking', 'is-writing');
-      index = (index + 1) % words.length;
       await sleep(REST);
     }
   }
