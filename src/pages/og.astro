@@ -21,7 +21,7 @@ import { intro, person } from '../data/site';
     <div class="card">
       <p class="label">{person.name} · {person.role} · {person.location}</p>
       <p class="statement">{intro.lead} <span class="old">{intro.edits[0]}</span></p>
-      <p class="foot"><span class="hand">{intro.note}</span><span class="url">nedath.me</span></p>
+      <p class="foot"><span class="hand">{intro.note}</span><span class="url">{new URL(person.url).host}</span></p>
     </div>
   </body>
 </html>

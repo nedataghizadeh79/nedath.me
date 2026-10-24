@@ -11,7 +11,7 @@ export const person = {
   role: 'Frontend developer',
   location: 'Bonn, Germany',
   email: 'nedath1378@gmail.com',
-  url: 'https://nedath.me',
+  url: 'https://neda.page',
 };
 
 /** One public profile link. */

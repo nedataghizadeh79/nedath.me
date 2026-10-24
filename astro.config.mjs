@@ -2,6 +2,6 @@
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-  site: 'https://nedath.me',
+  site: 'https://neda.page',
   trailingSlash: 'always',
 });

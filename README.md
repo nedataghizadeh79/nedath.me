@@ -1,4 +1,4 @@
-# nedath.me
+# neda.page
 
 Personal website of Neda Taghizade Serajeh: frontend developer with a UI/UX and people side.
 
@@ -37,4 +37,4 @@ After changing anything that appears on the CV, run `npm run build && npm run re
 
 ## Deploy
 
-Deployed on Vercel (free Hobby plan) from the `main` branch. The custom domain `nedath.me` points to Vercel; `nedath.vercel.app` is the permanent fallback address.
+Deployed on Vercel (free Hobby plan) at [neda.page](https://neda.page). Vercel issues and renews the HTTPS certificate automatically; no separate SSL certificate is needed. To deploy by hand, run `npx vercel deploy --prod` in this folder.
