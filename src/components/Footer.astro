@@ -1,6 +1,7 @@
 ---
 import EmailCopy from './EmailCopy.astro';
 import { cvFile, person, profiles } from '../data/site';
+import { alternateNames } from '../data/seo';
 
 const year = new Date().getFullYear();
 ---
@@ -20,7 +21,7 @@ const year = new Date().getFullYear();
       <li><a href="/album/">Album</a></li>
     </ul>
     <p class="small">
-      © {year} {person.name} · No cookies, no tracking · <a href="/colophon/">Colophon</a>
+      © {year} {person.name}, also written {alternateNames[0]} · No cookies, no tracking · <a href="/colophon/">Colophon</a>
     </p>
   </div>
 </footer>

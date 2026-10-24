@@ -29,7 +29,7 @@ interface Props {
 
 const { title, description, kind = 'page', crumbs = [], schema = [], noindex = false } = Astro.props;
 const site = Astro.site!;
-const fullTitle = title ? `${title} · ${person.name}` : `${person.name} · Front-end Developer & UI/UX Designer`;
+const fullTitle = title ? `${title} · ${person.name}` : `${person.name} (Taghizadeh) · Front-end Developer`;
 const canonical = new URL(Astro.url.pathname, site);
 const ogImage = new URL('/og.png', site);
 const portrait = await getImage({ src: homePhoto.src, width: 640, format: 'jpg' });
