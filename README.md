@@ -18,7 +18,7 @@ The site looks like a manuscript under edit: blue pencil, the colour editors use
 | `npm install`    | Install dependencies                                     |
 | `npm run dev`    | Start the dev server at `localhost:4321`                 |
 | `npm run build`  | Build the static site into `dist/`                       |
-| `npm run render` | After a build: render the CV PDF and the share image     |
+| `npm run render` | After a build: render the share image                    |
 | `npm run preview`| Serve the built site locally                             |
 
 `npm run render` uses headless Chrome. Set `CHROME_PATH` if Chrome is not in the default macOS location.
@@ -33,7 +33,7 @@ All content is typed data, so pages and the CV stay in sync:
 
 Case studies list missing facts in `missing`; they show as visible "To add before launch" notes until filled in.
 
-After changing anything that appears on the CV, run `npm run build && npm run render` and commit the new PDF.
+The downloadable CV is Neda’s own PDF, `public/Neda_Taghizade_Serajeh_CV.pdf`. To update it, replace that file. The `/cv/` page is a quick HTML overview built from the data files.
 
 ## Deploy
 

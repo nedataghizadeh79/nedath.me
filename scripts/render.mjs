@@ -1,6 +1,6 @@
 /**
- * Renders the downloadable CV (PDF) and the social preview image (PNG)
- * from the built site, using headless Chrome.
+ * Renders the social preview image (PNG) from the built site, using headless Chrome.
+ * The downloadable CV is Neda's own PDF in public/ and is not generated here.
  *
  * Usage: npm run build && npm run render
  * Set CHROME_PATH if Chrome is not in the default macOS location.
@@ -32,9 +32,8 @@ function chromeRun(flags, url) {
 
 try {
   await ready();
-  chromeRun(['--no-pdf-header-footer', '--print-to-pdf=public/Neda_Taghizade_Serajeh_CV.pdf'], `${base}/cv/`);
   chromeRun(['--window-size=1200,630', '--screenshot=public/og.png'], `${base}/og/`);
-  console.log('Rendered public/Neda_Taghizade_Serajeh_CV.pdf and public/og.png');
+  console.log('Rendered public/og.png');
 } finally {
   server.kill();
 }
