@@ -1,0 +1,79 @@
+---
+/**
+ * Reference letters as paper documents, each with a short quote and a download link.
+ * File sizes are read from public/ at build time, so they are always right.
+ */
+import { statSync } from 'node:fs';
+import { join } from 'node:path';
+import { references } from '../data/profile';
+
+interface Props {
+  /** Heading level, to keep the page outline correct. */
+  level?: 'h2' | 'h3';
+}
+
+const { level = 'h2' } = Astro.props;
+const Heading = level;
+
+/** File size of a PDF in public/, e.g. "820 KB" or "3.4 MB". */
+function size(href: string) {
+  const bytes = statSync(join(process.cwd(), 'public', href)).size;
+  return bytes > 1_000_000 ? `${(bytes / 1_000_000).toFixed(1)} MB` : `${Math.round(bytes / 1000)} KB`;
+}
+---
+
+<section class="refs" aria-labelledby="references">
+  <Heading id="references" class="refs-title">Reference letters</Heading>
+  <p class="refs-lead">What my employers wrote about my work. Both letters are signed and available as PDF.</p>
+  <ol role="list" class="letters">
+    {references.map((r, i) => (
+      <li class="letter" style={`--tilt: ${i % 2 ? 0.8 : -0.8}deg`}>
+        <p class="label">{r.date} · {r.language}</p>
+        <h3 class="org">{r.org}</h3>
+        <p class="kind">{r.title}{r.originalTitle && <> (<span lang="de">{r.originalTitle}</span>)</>}</p>
+        <blockquote>
+          <p>“{r.quote}”</p>
+          {r.quoteNote && <p class="note">{r.quoteNote}</p>}
+        </blockquote>
+        <p class="signed">Signed by {r.signedBy.join(' and ')}</p>
+        <a class="button button--primary" href={r.href} download>
+          Download PDF <span class="size">({size(r.href)})</span>
+        </a>
+        {r.redacted && <p class="redacted">{r.redacted}</p>}
+      </li>
+    ))}
+  </ol>
+</section>
+
+<style>
+  .refs { display: grid; gap: var(--space-4); }
+  .refs-title { font-size: var(--t-xl); }
+  .refs-lead { color: var(--quiet); max-width: var(--measure); }
+  .letters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-7); margin-top: var(--space-4); }
+  /* Each letter looks like a sheet of paper on the desk. */
+  .letter {
+    display: grid;
+    gap: var(--space-3);
+    align-content: start;
+    justify-items: start;
+    padding: var(--space-6) var(--space-5);
+    background: var(--print);
+    color: #15171b;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.08), 0 14px 32px -12px rgb(0 0 0 / 0.28);
+    transform: rotate(var(--tilt));
+  }
+  .letter .label { color: #5b6168; }
+  .org { font-family: var(--f-voice); font-size: var(--t-lg); font-weight: 450; line-height: 1.2; }
+  .kind { color: #5b6168; }
+  blockquote { margin: var(--space-2) 0; padding-left: var(--space-4); border-left: 1.5px solid #2b50d8; display: grid; gap: var(--space-1); }
+  blockquote p:first-child { font-family: var(--f-voice); font-style: italic; font-size: var(--t-md); line-height: 1.4; }
+  blockquote .note { color: #2b50d8; font-size: 1.35rem; }
+  .signed { font-size: var(--t-sm); color: #5b6168; }
+  .letter .button { margin-top: var(--space-2); background: #15171b; border-color: #15171b; color: #fdfdfb; }
+  .letter .button:hover { background: #2b50d8; border-color: #2b50d8; }
+  .size { font-weight: 400; opacity: 0.85; }
+  .redacted { font-size: var(--t-xs); color: #5b6168; }
+  @media (max-width: 52rem) {
+    .letters { grid-template-columns: minmax(0, 1fr); gap: var(--space-6); }
+  }
+</style>

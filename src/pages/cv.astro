@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import PageHeader from '../components/PageHeader.astro';
+import ReferenceLetters from '../components/ReferenceLetters.astro';
 import { cvFile, person, profiles } from '../data/site';
 import { certificates, cvSkills, education, experience, languages, publications, volunteering } from '../data/profile';
 import { projects } from '../data/work';
@@ -101,8 +102,11 @@ const bare = (href: string) => href.replace(/^https?:\/\/(www\.)?/, '').replace(
       </div>
     </section>
 
-    <p class="refs">Reference letters from ZB MED and Serity are available on request.</p>
   </article>
+
+  <div class="refs-block">
+    <ReferenceLetters />
+  </div>
 </Base>
 
 <style>
@@ -132,7 +136,7 @@ const bare = (href: string) => href.replace(/^https?:\/\/(www\.)?/, '').replace(
   .pairs dt { font-weight: 600; min-width: 6rem; }
   .split { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-6); }
   .plain { padding-left: 1.1em; display: grid; gap: 2px; }
-  .refs { color: var(--quiet); font-size: var(--t-sm); }
+  .refs-block { padding-block: var(--space-8) 0; }
 
   @media (max-width: 40rem) {
     .contact { text-align: left; }
@@ -142,7 +146,7 @@ const bare = (href: string) => href.replace(/^https?:\/\/(www\.)?/, '').replace(
   @media print {
     @page { size: A4; margin: 13mm 14mm; }
     :global(html) { --paper: #fff; --paper-raised: #fff; --ink: #111; --quiet: #444; --pencil: #2b50d8; --rule: #ccc; }
-    :global(.masthead), :global(.band), :global(.skip), :global(.page-header) { display: none !important; }
+    :global(.masthead), :global(.band), :global(.skip), :global(.page-header), .refs-block { display: none !important; }
     :global(main.page) { padding: 0; max-width: none; }
     .cv { border: 0; padding: 0; font-size: 9.6pt; gap: 10pt; background: #fff; }
     .cv-head h1 { font-size: 20pt; }

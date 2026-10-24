@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import PageHeader from '../components/PageHeader.astro';
 import Print from '../components/Print.astro';
+import ReferenceLetters from '../components/ReferenceLetters.astro';
 import { aboutPhoto } from '../data/album';
 import { person } from '../data/site';
 import { certificates, education, experience, languages, outsideWork, publications, skills, volunteering } from '../data/profile';
@@ -44,6 +45,10 @@ const publicationSchema = publications.map((pub) => ({
       ))}
     </ul>
   </section>
+
+  <div class="section">
+    <ReferenceLetters />
+  </div>
 
   <section class="section" aria-labelledby="volunteering">
     <h2 id="volunteering">Leadership and volunteering</h2>

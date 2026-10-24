@@ -155,6 +155,51 @@ export const skills: Skill[] = [
   { name: 'Git and code review', evidence: 'Branches and reviewed pull requests at ZB MED' },
 ];
 
+/** A downloadable reference letter from an employer. */
+export interface Reference {
+  org: string;
+  /** What kind of letter it is, in English. */
+  title: string;
+  /** The letter's own name when it is not in English. */
+  originalTitle?: string;
+  language: string;
+  date: string;
+  signedBy: string[];
+  /** One sentence from the letter. */
+  quote: string;
+  /** Set when the quote is translated. */
+  quoteNote?: string;
+  /** Path of the PDF in public/. */
+  href: string;
+  /** Shown next to the download link when part of the letter is covered. */
+  redacted?: string;
+}
+
+/** Reference letters, newest first. */
+export const references: Reference[] = [
+  {
+    org: 'ZB MED – Information Centre for Life Sciences',
+    title: 'Interim reference',
+    originalTitle: 'Zwischenzeugnis',
+    language: 'German',
+    date: 'October 2026',
+    signedBy: ['Prof. Dr. Dietrich Rebholz-Schuhmann, Scientific Director', 'Roman Baum, Head of Terminology Services'],
+    quote: 'She is always highly motivated and works very carefully and thoroughly at all times; her results are always of good quality.',
+    quoteNote: 'translated from German',
+    href: '/references/Neda_Taghizadeh_Serajeh_ZB_MED_Reference.pdf',
+    redacted: 'Date and place of birth covered for privacy.',
+  },
+  {
+    org: 'Serity GmbH',
+    title: 'Work certificate',
+    language: 'English',
+    date: 'July 2025',
+    signedBy: ['Hamid Rezai, Managing Director'],
+    quote: 'She carried out her responsibilities to our full satisfaction at all times.',
+    href: '/references/Neda_Taghizadeh_Serajeh_Serity_Work_Certificate.pdf',
+  },
+];
+
 /** Skills exactly as grouped on the CV. */
 export const cvSkills = [
   { group: 'Languages', items: 'TypeScript, JavaScript, HTML, CSS, Python' },
