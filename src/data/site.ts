@@ -28,7 +28,15 @@ export const profiles: Profile[] = [
   { label: 'Google Scholar', href: 'https://scholar.google.com/citations?user=wXJ6XPEAAAAJ&hl=en', detail: '2 publications' },
 ];
 
-/** Path of the downloadable CV (built by `npm run render`). */
+/** What Neda is looking for, shown on the home page and used in search descriptions. */
+export const lookingFor = {
+  roles: 'Working student or internship',
+  fields: 'front-end development or UI/UX design',
+  places: ['Remote', 'Hybrid', 'Bonn', 'Cologne', 'Düsseldorf'],
+  graduation: 'M.Sc. graduation in 2027',
+};
+
+/** Path of the downloadable CV. */
 export const cvFile = {
   href: '/Neda_Taghizade_Serajeh_CV.pdf',
   label: 'CV (PDF)',

@@ -1,11 +1,10 @@
 ---
 import Base from '../layouts/Base.astro';
 import ProjectRow from '../components/ProjectRow.astro';
-import Placeholder from '../components/Placeholder.astro';
 import PencilMark from '../components/PencilMark.astro';
 import Print from '../components/Print.astro';
 import { homePhoto } from '../data/album';
-import { cvFile, intro, person } from '../data/site';
+import { cvFile, intro, lookingFor, person } from '../data/site';
 import { featured } from '../data/work';
 import { defaultDescription } from '../data/seo';
 
@@ -52,7 +51,14 @@ const spoken = `${intro.lead} ${resting.replace(/\.$/, '')}, ${rewrites.map((w) 
       <p class="now">
         Front-end developer at ZB MED and M.Sc. Computer Science student at the University of Bonn, graduating September 2027.
       </p>
-      <Placeholder items={['What you are looking for and from when: e.g. working student now, full-time from autumn 2027']} />
+      <div class="open-to">
+        <p class="note">open to</p>
+        <p class="role">{lookingFor.roles} in {lookingFor.fields}</p>
+        <ul role="list" class="places">
+          {lookingFor.places.map((place) => <li>{place}</li>)}
+        </ul>
+        <p class="grad">{lookingFor.graduation}</p>
+      </div>
       <div class="actions">
         <a class="button button--primary" href={cvFile.href} download>Download CV</a>
         <a class="button" href="#contact">Contact</a>
@@ -191,6 +197,21 @@ const spoken = `${intro.lead} ${resting.replace(/\.$/, '')}, ${rewrites.map((w) 
 
   .after { grid-column: 1 / 8; display: grid; gap: var(--space-5); margin-top: var(--space-8); padding-top: var(--space-6); border-top: 1px solid var(--rule); }
   .now { color: var(--quiet); max-width: 58ch; }
+  /* What I'm looking for: a small card circled in spirit by the blue pencil. */
+  .open-to {
+    display: grid;
+    gap: var(--space-2);
+    justify-items: start;
+    padding: var(--space-4) var(--space-5);
+    border: 1.5px solid var(--pencil);
+    border-radius: 2px;
+    max-width: 40rem;
+  }
+  .open-to .note { font-size: 1.6rem; }
+  .open-to .role { font-family: var(--f-voice); font-size: var(--t-lg); line-height: 1.25; }
+  .places { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  .places li { font-family: var(--f-mono); font-size: var(--t-xs); padding: 0.2em 0.7em; border: 1px solid var(--rule); border-radius: 999px; }
+  .grad { font-size: var(--t-sm); color: var(--quiet); }
   .actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
 
   .head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: var(--space-3); margin-bottom: var(--space-5); }

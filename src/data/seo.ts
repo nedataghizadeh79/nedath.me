@@ -11,7 +11,7 @@ export const alternateNames = ['Neda Taghizadeh Serajeh', 'Neda Taghizadeh', 'N.
 
 /** Default description for pages that do not bring their own. */
 export const defaultDescription =
-  'Front-end developer and UI/UX designer in Bonn: React and TypeScript at ZB MED, ServiceNow Certified System Administrator, M.Sc. at the University of Bonn.';
+  'Front-end developer and UI/UX designer in Bonn, open to working-student roles and internships. React and TypeScript at ZB MED, M.Sc. at the University of Bonn.';
 
 /** One step in a breadcrumb trail. */
 export interface Crumb {
