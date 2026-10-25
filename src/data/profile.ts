@@ -187,7 +187,6 @@ export const references: Reference[] = [
     quote: 'She is always highly motivated and works very carefully and thoroughly at all times; her results are always of good quality.',
     quoteNote: 'translated from German',
     href: '/references/Neda_Taghizadeh_Serajeh_ZB_MED_Reference.pdf',
-    redacted: 'Date and place of birth covered for privacy.',
   },
   {
     org: 'Serity GmbH',
