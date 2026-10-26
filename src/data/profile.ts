@@ -45,7 +45,7 @@ export const experience: Role[] = [
     orgHref: 'https://www.digikala.com',
     title: 'Front-end Developer',
     place: 'Tehran, Iran',
-    dates: 'Nov 2022 – May 2023',
+    dates: 'Nov 2022 – Mar 2023',
     project: 'seller-center-migration',
     points: [
       'Worked on the Seller Center of Iran’s largest online retailer (40M+ monthly users).',

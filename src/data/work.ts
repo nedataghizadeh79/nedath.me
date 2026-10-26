@@ -147,7 +147,7 @@ export const projects: Project[] = [
     caseStudy: {
       context: [
         'Digikala is Iran’s largest online retailer, with more than 40 million monthly users. The Seller Center is the panel its sellers use to manage their business on the platform.',
-        'From November 2022 to May 2023 I worked on the Seller Center as a front-end developer in Tehran, during its move from server-rendered Twig templates to React.',
+        'From November 2022 to March 2023 I worked on the Seller Center as a front-end developer in Tehran, during its move from server-rendered Twig templates to React.',
       ],
       myPart: [
         'Rewrote legacy seller-panel pages as reusable React and TypeScript components.',
