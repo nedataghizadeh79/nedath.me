@@ -1,5 +1,6 @@
 ---
 import PencilMark from './PencilMark.astro';
+import SocialLinks from './SocialLinks.astro';
 import { person } from '../data/site';
 
 const links = [
@@ -29,9 +30,12 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
       ))}
     </ul>
   </nav>
-  <button class="theme" type="button" data-theme-toggle aria-label="Switch colour theme">
-    <span aria-hidden="true"></span>
-  </button>
+  <div class="tools">
+    <SocialLinks variant="icons" />
+    <button class="theme" type="button" data-theme-toggle aria-label="Switch colour theme">
+      <span aria-hidden="true"></span>
+    </button>
+  </div>
 </header>
 
 <style>
@@ -42,6 +46,7 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
     gap: var(--space-3) var(--space-6);
     padding-block: var(--space-5);
   }
+  .tools { display: flex; align-items: center; gap: var(--space-3); }
   .name {
     font-family: var(--f-voice);
     font-size: var(--t-md);

@@ -20,11 +20,13 @@ export interface Profile {
   href: string;
   /** Short handle or detail shown next to the label. */
   detail: string;
+  /** Brand logo; profiles with a logo are shown prominently in the header and on home. */
+  icon?: 'linkedin' | 'github';
 }
 
 export const profiles: Profile[] = [
-  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/neda-taghizadeh-serajeh/', detail: 'neda-taghizadeh-serajeh' },
-  { label: 'GitHub', href: 'https://github.com/nedataghizadeh79', detail: 'nedataghizadeh79' },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/neda-taghizadeh-serajeh/', detail: 'neda-taghizadeh-serajeh', icon: 'linkedin' },
+  { label: 'GitHub', href: 'https://github.com/nedataghizadeh79', detail: 'nedataghizadeh79', icon: 'github' },
   { label: 'Google Scholar', href: 'https://scholar.google.com/citations?user=wXJ6XPEAAAAJ&hl=en', detail: '2 publications' },
 ];
 

@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import ProjectRow from '../components/ProjectRow.astro';
 import PencilMark from '../components/PencilMark.astro';
 import Print from '../components/Print.astro';
+import SocialLinks from '../components/SocialLinks.astro';
 import { homePhoto } from '../data/album';
 import { cvFile, intro, lookingFor, person } from '../data/site';
 import { featured } from '../data/work';
@@ -31,6 +32,11 @@ const spoken = `${intro.lead} ${resting.replace(/\.$/, '')}, ${rewrites.map((w) 
     <div class="story">
       {intro.story.map((para) => <p>{para}</p>)}
       <p class="art">{intro.art.text} <a href={intro.art.href}>{intro.art.link} →</a></p>
+      <div class="actions">
+        <a class="button button--primary" href={cvFile.href} download>Download CV</a>
+        <SocialLinks variant="buttons" />
+        <a class="button" href="#contact">Contact</a>
+      </div>
     </div>
 
     <div class="portrait">
@@ -58,10 +64,6 @@ const spoken = `${intro.lead} ${resting.replace(/\.$/, '')}, ${rewrites.map((w) 
           {lookingFor.places.map((place) => <li>{place}</li>)}
         </ul>
         <p class="grad">{lookingFor.graduation}</p>
-      </div>
-      <div class="actions">
-        <a class="button button--primary" href={cvFile.href} download>Download CV</a>
-        <a class="button" href="#contact">Contact</a>
       </div>
     </div>
   </section>
@@ -212,7 +214,7 @@ const spoken = `${intro.lead} ${resting.replace(/\.$/, '')}, ${rewrites.map((w) 
   .places { display: flex; flex-wrap: wrap; gap: var(--space-2); }
   .places li { font-family: var(--f-mono); font-size: var(--t-xs); padding: 0.2em 0.7em; border: 1px solid var(--rule); border-radius: 999px; }
   .grad { font-size: var(--t-sm); color: var(--quiet); }
-  .actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+  .actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); margin-top: var(--space-3); }
 
   .head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: var(--space-3); margin-bottom: var(--space-5); }
   .head h2 { position: relative; font-size: var(--t-xxl); }
