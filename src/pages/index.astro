@@ -106,12 +106,12 @@ const spoken = `${intro.lead} ${resting.replace(/\.$/, '')}, ${rewrites.map((w) 
     font-family: var(--f-voice);
     font-size: var(--t-hero);
     font-weight: 350;
-    line-height: 1.16;
+    line-height: 1.42;
     letter-spacing: -0.03em;
     padding-top: var(--space-4);
   }
-  /* The top padding keeps room for the handwriting, so it never touches the line above. */
-  .edit { position: relative; display: inline-block; white-space: nowrap; padding-top: 0.5em; }
+  /* A clear word space before the edited words, so the strike never touches "into". */
+  .edit { position: relative; display: inline-block; white-space: nowrap; margin-inline-start: 0.28em; }
   .old { position: relative; display: inline-block; }
   /* The strike: a blue-pencil line drawn through the old words. */
   .old::after {
@@ -133,7 +133,7 @@ const spoken = `${intro.lead} ${resting.replace(/\.$/, '')}, ${rewrites.map((w) 
   .insert {
     position: absolute;
     left: 0;
-    bottom: 1.45em;
+    bottom: 74%;
     display: flex;
     align-items: flex-end;
     gap: 0.1em;
@@ -182,7 +182,7 @@ const spoken = `${intro.lead} ${resting.replace(/\.$/, '')}, ${rewrites.map((w) 
     grid-row: 3;
     display: grid;
     gap: var(--space-5);
-    margin-top: var(--space-6);
+    margin-top: var(--space-8);
     font-size: var(--t-md);
     line-height: 1.6;
     max-width: 60ch;
@@ -190,6 +190,7 @@ const spoken = `${intro.lead} ${resting.replace(/\.$/, '')}, ${rewrites.map((w) 
   /* The first name stands out; the long family name stays small. */
   .greeting strong { font-family: var(--f-voice); font-size: 1.7em; font-weight: 700; line-height: 1; letter-spacing: -0.02em; }
   .greeting small { font-size: 0.72em; color: var(--quiet); }
+  .art { margin-top: var(--space-6); }
   .art a { font-family: var(--f-hand); font-size: 1.45em; white-space: nowrap; }
   .proofs {
     grid-column: 1 / 8;
