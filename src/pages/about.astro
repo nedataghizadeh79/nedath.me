@@ -4,7 +4,7 @@ import PageHeader from '../components/PageHeader.astro';
 import Print from '../components/Print.astro';
 import { aboutPhoto } from '../data/album';
 import { person } from '../data/site';
-import { certificates, education, experience, languages, outsideWork, publications, skills, volunteering } from '../data/profile';
+import { certificates, education, experience, languages, outsideWork, publications, skills, teaching, volunteering } from '../data/profile';
 
 /** Publications as scholarly articles, linked to the Person entity. */
 const publicationSchema = publications.map((pub) => ({
@@ -39,6 +39,21 @@ const publicationSchema = publications.map((pub) => ({
             </p>
             <ul role="list" class="points">{job.points.map((pt) => <li>{pt}</li>)}</ul>
             {job.project && <a class="more" href={`/work/${job.project}/`}>Read the case study →</a>}
+          </div>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="section" aria-labelledby="teaching">
+    <h2 id="teaching">Teaching</h2>
+    <ul role="list" class="entries">
+      {teaching.map((t) => (
+        <li class="entry">
+          <p class="when tabular">{t.dates}</p>
+          <div class="stack" style="--gap: var(--space-2)">
+            <h3>{t.course}</h3>
+            <p class="org">{t.role} · {t.instructor} · Sharif University of Technology</p>
           </div>
         </li>
       ))}

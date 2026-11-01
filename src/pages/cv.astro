@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 import PageHeader from '../components/PageHeader.astro';
 import { cvFile, person, profiles } from '../data/site';
-import { certificates, cvSkills, education, experience, languages, publications, volunteering } from '../data/profile';
+import { certificates, cvSkills, education, experience, languages, publications, teaching, volunteering } from '../data/profile';
 import { projects } from '../data/work';
 
 /** Projects listed on the CV, in this order. */
@@ -23,7 +23,7 @@ const bare = (href: string) => href.replace(/^https?:\/\/(www\.)?/, '').replace(
     <header class="cv-head">
       <div>
         <h1>{person.name}</h1>
-        <p>M.Sc. Computer Science student · Expected graduation Sep 2027 · {person.location}</p>
+        <p>M.Sc. Computer Science student · Expected graduation Dec 2027 · {person.location}</p>
       </div>
       <ul role="list" class="contact">
         <li><a href={`mailto:${person.email}`}>{person.email}</a></li>
@@ -76,6 +76,16 @@ const bare = (href: string) => href.replace(/^https?:\/\/(www\.)?/, '').replace(
         <div class="item">
           <div class="line"><strong>{p.title}</strong><span class="tabular">{p.years}</span></div>
           <p>{p.summary}</p>
+        </div>
+      ))}
+    </section>
+
+    <section>
+      <h2>Teaching</h2>
+      {teaching.map((t) => (
+        <div class="item">
+          <div class="line"><strong>{t.course}</strong><span class="tabular">{t.dates}</span></div>
+          <div class="line"><span>{t.role}, Sharif University of Technology</span><span>{t.instructor}</span></div>
         </div>
       ))}
     </section>
