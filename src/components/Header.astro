@@ -16,8 +16,9 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
 ---
 
 <header class="masthead page">
-  <a class="name" href="/" aria-label={`${person.name}, home`}>
+  <a class="name" href="/" aria-label={`${person.name}, home`} aria-current={isCurrent('/') ? 'page' : undefined}>
     {person.name}
+    {isCurrent('/') && <PencilMark kind="underline" class="pencil--load home-mark" />}
   </a>
   <nav aria-label="Main">
     <ul role="list">
@@ -49,12 +50,16 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
   }
   .tools { display: flex; align-items: center; gap: var(--space-3); }
   .name {
+    position: relative;
+    justify-self: start;
     font-family: var(--f-voice);
     font-size: var(--t-md);
     color: var(--ink);
     text-decoration: none;
     letter-spacing: -0.01em;
   }
+  /* On the home page the name is underlined in blue pencil, as the current page. */
+  .name :global(.home-mark) { position: absolute; left: 0; bottom: -0.4em; width: 100%; height: 0.45em; }
   nav ul { display: flex; gap: var(--space-7); }
   nav li { white-space: nowrap; }
   nav a {

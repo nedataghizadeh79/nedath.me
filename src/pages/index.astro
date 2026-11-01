@@ -34,7 +34,7 @@ const spoken = `${intro.lead} ${resting.replace(/\.$/, '')}, ${rewrites.map((w) 
         {intro.greeting.before} <strong>{intro.greeting.name}</strong> <small>{intro.greeting.family}</small>{intro.greeting.after}
       </p>
       {intro.story.map((para) => <p>{para}</p>)}
-      <p class="art">{intro.art.text} <a href={intro.art.href}>{intro.art.link} →</a></p>
+      <p class="art"><a href={intro.art.href}>{intro.art.link} →</a></p>
       <div class="actions">
         <a class="button button--primary" href={cvFile.href} download>Download CV</a>
         <SocialLinks variant="buttons" />
@@ -106,12 +106,12 @@ const spoken = `${intro.lead} ${resting.replace(/\.$/, '')}, ${rewrites.map((w) 
     font-family: var(--f-voice);
     font-size: var(--t-hero);
     font-weight: 350;
-    line-height: 1.42;
+    line-height: 1.16;
     letter-spacing: -0.03em;
     padding-top: var(--space-4);
   }
-  /* A clear word space before the edited words, so the strike never touches "into". */
-  .edit { position: relative; display: inline-block; white-space: nowrap; margin-inline-start: 0.28em; }
+  /* The top padding keeps room for the handwriting, so it never touches the line above. */
+  .edit { position: relative; display: inline-block; white-space: nowrap; padding-top: 0.5em; }
   .old { position: relative; display: inline-block; }
   /* The strike: a blue-pencil line drawn through the old words. */
   .old::after {
@@ -133,7 +133,7 @@ const spoken = `${intro.lead} ${resting.replace(/\.$/, '')}, ${rewrites.map((w) 
   .insert {
     position: absolute;
     left: 0;
-    bottom: 74%;
+    bottom: 1.45em;
     display: flex;
     align-items: flex-end;
     gap: 0.1em;
@@ -144,11 +144,12 @@ const spoken = `${intro.lead} ${resting.replace(/\.$/, '')}, ${rewrites.map((w) 
     color: var(--pencil);
     white-space: nowrap;
     clip-path: inset(0 100% 0 0);
+    opacity: 0;
     transition: clip-path 700ms var(--ease);
     pointer-events: none;
   }
   .caret { font-family: var(--f-voice); font-size: 0.8em; transform: translateY(0.9em); }
-  .edit.is-writing .insert { clip-path: inset(-20% -5% -40% -5%); }
+  .edit.is-writing .insert { clip-path: inset(-20% -5% -40% -5%); opacity: 1; }
 
   .portrait {
     grid-column: 9 / -1;
@@ -189,9 +190,7 @@ const spoken = `${intro.lead} ${resting.replace(/\.$/, '')}, ${rewrites.map((w) 
   /* The first name stands out; the long family name stays small. */
   .greeting strong { font-family: var(--f-voice); font-size: 1.7em; font-weight: 700; line-height: 1; letter-spacing: -0.02em; }
   .greeting small { font-size: 0.72em; color: var(--quiet); }
-  /* The art line gets its own small block, set apart by a rule. */
-  .art { font-family: var(--f-voice); font-style: italic; margin-top: var(--space-3); padding-top: var(--space-5); border-top: 1px solid var(--rule); }
-  .art a { font-style: normal; font-family: var(--f-hand); font-size: 1.45em; white-space: nowrap; }
+  .art a { font-family: var(--f-hand); font-size: 1.45em; white-space: nowrap; }
   .proofs {
     grid-column: 1 / 8;
     grid-row: 4 / 6;

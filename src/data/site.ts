@@ -68,10 +68,10 @@ export const intro = {
   /** A short introduction right under the statement: the first impression. */
   story: [
     'I care about the small things: a clear screen, tidy code, a good conversation with the people I work with. I’m curious, I ask a lot of questions, and I’m happiest when something I helped build makes someone’s day a little easier.',
+    'Away from the screen, you’ll find me lost in my latest DIY project, on a snowboard, at a board game table, learning Deutsch articles or watching a movie I’ll soon insist you have to see.',
   ],
-  /** A paragraph about life away from the screen, linking to the Portfolio page. */
+  /** The link to the Portfolio page, right after the introduction. */
   art: {
-    text: 'Away from the screen, you’ll find me lost in my latest DIY project, on a snowboard, at a board game table, learning Deutsch articles or watching a movie I’ll soon insist you have to see.',
     link: 'See my art portfolio',
     href: '/portfolio/',
   },
