@@ -33,9 +33,11 @@ const hasAside = Astro.slots.has('aside');
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     gap: var(--space-7);
-    padding-block: var(--space-8) var(--space-7);
+    padding-block: var(--space-8);
     align-items: start;
   }
+  /* The header's own bottom space is the gap, so every page starts its content at the same distance. */
+  :global(.page) .page-header + :global(*) { padding-top: 0; border-top: 0; }
   .page-header.has-aside { grid-template-columns: minmax(0, 1fr) minmax(14rem, 20rem); }
   .text { display: grid; gap: var(--space-4); justify-items: start; max-width: 52rem; }
   h1 {

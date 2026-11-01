@@ -95,7 +95,7 @@ const spoken = `${intro.lead} ${resting.replace(/\.$/, '')}, ${rewrites.map((w) 
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
     column-gap: var(--space-5);
-    padding-block: var(--space-7) var(--space-8);
+    padding-block: var(--space-8);
   }
   .byline { grid-column: 1 / -1; margin-bottom: var(--space-6); }
 
@@ -190,7 +190,8 @@ const spoken = `${intro.lead} ${resting.replace(/\.$/, '')}, ${rewrites.map((w) 
   /* The first name stands out; the long family name stays small. */
   .greeting strong { font-family: var(--f-voice); font-size: 1.7em; font-weight: 700; line-height: 1; letter-spacing: -0.02em; }
   .greeting small { font-size: 0.72em; color: var(--quiet); }
-  .art { margin-top: var(--space-6); }
+  /* With the grid gap, this makes the same section distance as above the text. */
+  .art { margin-top: var(--space-7); }
   .art a { font-family: var(--f-hand); font-size: 1.45em; white-space: nowrap; }
   .proofs {
     grid-column: 1 / 8;
@@ -206,7 +207,7 @@ const spoken = `${intro.lead} ${resting.replace(/\.$/, '')}, ${rewrites.map((w) 
   /* Each proof gets an editor's check mark: checked, true. */
   .proofs :global(.tick) { width: 1.4rem; height: 1.2rem; margin-top: 0.15em; }
 
-  .after { grid-column: 1 / 8; display: grid; gap: var(--space-5); margin-top: var(--space-8); padding-top: var(--space-6); border-top: 1px solid var(--rule); }
+  .after { grid-column: 1 / 8; display: grid; gap: var(--space-5); margin-top: var(--space-8); padding-top: var(--space-8); border-top: 1px solid var(--rule); }
   .now { color: var(--quiet); max-width: 58ch; }
   /* What I'm looking for: a small card circled in spirit by the blue pencil. */
   .open-to {
@@ -230,6 +231,8 @@ const spoken = `${intro.lead} ${resting.replace(/\.$/, '')}, ${rewrites.map((w) 
   .grad { font-size: var(--t-sm); color: var(--quiet); }
   .actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); margin-top: var(--space-3); }
 
+  /* The last project row already ends with the section distance. */
+  .section { padding-bottom: 0; }
   .head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: var(--space-3); margin-bottom: var(--space-5); }
   .head h2 { position: relative; font-size: var(--t-xxl); }
   .head :global(.head-mark) { position: absolute; left: 0; bottom: -0.35em; width: 100%; height: 0.4em; }
@@ -244,6 +247,5 @@ const spoken = `${intro.lead} ${resting.replace(/\.$/, '')}, ${rewrites.map((w) 
     .margin-note { grid-column: 1; grid-row: 3; align-self: end; padding: 0 0 var(--space-3); }
     .margin-note :global(.note-arrow) { display: none; }
     .story, .proofs, .after { grid-column: 1 / -1; grid-row: auto; }
-    .proofs { margin-top: var(--space-7); }
   }
 </style>

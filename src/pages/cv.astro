@@ -110,6 +110,8 @@ const bare = (href: string) => href.replace(/^https?:\/\/(www\.)?/, '').replace(
     background: var(--paper-raised);
     border: 1px solid var(--rule);
     padding: clamp(1.25rem, 4vw, 3rem);
+    /* Twice the distance: this margin collapses with the footer's own. */
+    margin-bottom: calc(2 * var(--space-8));
     font-size: 0.95rem;
     line-height: 1.45;
     display: grid;
@@ -142,7 +144,7 @@ const bare = (href: string) => href.replace(/^https?:\/\/(www\.)?/, '').replace(
     :global(html) { --paper: #fff; --paper-raised: #fff; --ink: #111; --quiet: #444; --pencil: #2b50d8; --rule: #ccc; }
     :global(.masthead), :global(.band), :global(.skip), :global(.page-header) { display: none !important; }
     :global(main.page) { padding: 0; max-width: none; }
-    .cv { border: 0; padding: 0; font-size: 9.6pt; gap: 10pt; background: #fff; }
+    .cv { border: 0; padding: 0; margin-bottom: 0; font-size: 9.6pt; gap: 10pt; background: #fff; }
     .cv-head h1 { font-size: 20pt; }
     .cv h2 { margin-bottom: 4pt; break-after: avoid; }
     .contact a { padding-block: 0; }
