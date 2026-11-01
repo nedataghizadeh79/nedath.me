@@ -63,7 +63,7 @@ export const intro = {
     before: 'Hi, I’m',
     name: 'Neda',
     family: 'Taghizadeh Serajeh',
-    after: '. My name is long, but my pull requests are short.',
+    after: '. My name is long, but my commits are short.',
   },
   /** A short introduction right under the statement: the first impression. */
   story: [
