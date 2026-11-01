@@ -41,17 +41,6 @@ export const experience: Role[] = [
     ],
   },
   {
-    org: 'AYOT',
-    title: 'HR Assistant',
-    place: 'Tehran, Iran',
-    dates: 'Jun 2023 – Jan 2024',
-    points: [
-      'Supported recruitment and hiring for the startup, from sourcing candidates to coordinating the selection process.',
-      'Scheduled and coordinated meetings, interviews and team calendars across the company.',
-      'Combined a technical background with communication skills to bridge technical and non-technical teams.',
-    ],
-  },
-  {
     org: 'Digikala',
     orgHref: 'https://www.digikala.com',
     title: 'Front-end Developer',
@@ -94,23 +83,6 @@ export const volunteering: Role[] = [
   },
 ];
 
-/** One course taught as a teaching assistant. */
-export interface TeachingRole {
-  course: string;
-  role: 'Head TA' | 'Teaching Assistant';
-  instructor: string;
-  dates: string;
-}
-
-/** Teaching at Sharif University of Technology. */
-export const teaching: TeachingRole[] = [
-  { course: 'Computer Simulations', role: 'Head TA', instructor: 'Dr. Bardia Safaei', dates: 'Fall 2021 – Fall 2023' },
-  { course: 'Presentation of Scientific and Computer Technology', role: 'Teaching Assistant', instructor: 'Prof. Shohreh Kasaei', dates: 'Fall 2021 – Spring 2023' },
-  { course: 'Logic Design', role: 'Teaching Assistant', instructor: 'Dr. Laleh Arshadi', dates: 'Spring 2020 – Spring 2022' },
-  { course: 'Numerical Computations', role: 'Teaching Assistant', instructor: 'Dr. Fatemeh Baharifard', dates: 'Fall 2021 – Spring 2022' },
-  { course: 'Basic Programming', role: 'Head TA', instructor: 'Dr. Issa Moradnejad', dates: 'Spring 2020 – Fall 2021' },
-];
-
 export interface Degree {
   school: string;
   href: string;
@@ -124,7 +96,7 @@ export const education: Degree[] = [
     school: 'University of Bonn',
     href: 'https://www.uni-bonn.de/en/home',
     degree: 'M.Sc. Computer Science',
-    dates: 'Oct 2024 – expected Dec 2027',
+    dates: 'Oct 2024 – expected Dec. 2027',
     grade: '1.9 (German scale)',
   },
   {
@@ -178,8 +150,7 @@ export const skills: Skill[] = [
   { name: 'Figma', evidence: 'DALL-E platform, AYOT smart-home screens' },
   { name: 'User stories and requirements', evidence: 'Client work at Serity' },
   { name: 'Workshops and presenting', evidence: 'Serity client workshops, Shenasa' },
-  { name: 'Recruiting and interview coordination', evidence: 'HR Assistant at AYOT' },
-  { name: 'Teaching', evidence: 'Teaching assistant and Head TA at Sharif University of Technology' },
+  { name: 'Communication and recruiting', evidence: 'HR Assistant at AYOT, Jun 2023 – Jan 2024: a very good experience, thanks to my technical background and strong communication skills' },
   { name: 'ServiceNow', evidence: 'Certified System Administrator; Serity projects' },
   { name: 'Python', evidence: 'NLP course projects and research' },
   { name: 'Git and code review', evidence: 'Branches and reviewed pull requests at ZB MED' },

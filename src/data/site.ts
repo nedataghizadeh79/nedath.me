@@ -35,7 +35,7 @@ export const lookingFor = {
   roles: 'Working student or internship',
   fields: 'front-end development or UI/UX design',
   places: ['Remote', 'Hybrid', 'Bonn', 'Cologne', 'Düsseldorf'],
-  graduation: 'M.Sc. graduation in December 2027',
+  graduation: 'Expected Graduation: Dec. 2027',
 };
 
 /** Path of the downloadable CV. */
@@ -71,6 +71,6 @@ export const intro = {
     'Migrated Digikala’s Seller Center pages from Twig to reusable React and TypeScript components',
     'Designed the DALL-E artist-commission platform in Figma, then built it in React with my colleagues',
     'Turned client requirements into user stories for ServiceNow projects at Serity, and became a ServiceNow Certified System Administrator',
-    'Supported recruitment and hiring as HR Assistant at AYOT, from sourcing candidates to coordinating the selection process',
+    'Worked as HR Assistant at AYOT, a very good experience thanks to my technical background and strong communication skills',
   ],
 };
