@@ -32,8 +32,13 @@ export const profiles: Profile[] = [
 
 /** What Neda is looking for, shown on the home page and used in search descriptions. */
 export const lookingFor = {
-  roles: 'Working student or internship',
-  fields: 'front-end development or UI/UX design',
+  roles: 'Working student and internship positions in:',
+  /** The fields Neda can work in, each with the strength behind it. */
+  fields: [
+    { name: 'Software and front-end development', detail: 'React, TypeScript and open-source web libraries' },
+    { name: 'UI/UX design', detail: 'Figma design and prototyping, built through to working interfaces' },
+    { name: 'HR and technical recruiting', detail: 'A technical background combined with strong communication skills' },
+  ],
   places: ['Remote', 'Hybrid', 'Bonn', 'Cologne', 'Düsseldorf'],
   graduation: 'Expected Graduation: Dec. 2027',
 };
@@ -53,14 +58,20 @@ export const intro = {
   /** The word in `lead` circled in blue pencil on load. */
   circled: 'people',
   edits: ['React code.', 'clear user stories.', 'tested screens.'],
+  /** The first line of the introduction; the first name is set large and the family name small. */
+  greeting: {
+    before: 'Hi, I’m',
+    name: 'Neda',
+    family: 'Taghizadeh Serajeh',
+    after: '. My name is long, but my pull requests are short.',
+  },
   /** A short introduction right under the statement: the first impression. */
   story: [
-    'I’m a frontend developer in Bonn and an M.Sc. Computer Science student at the University of Bonn. At ZB MED I build open-source React widgets that research apps use to show ontology data. Before that I worked on Digikala’s Seller Center in Tehran, and designed and built interfaces at AYOT.',
-    'I enjoy work where design, code and people overlap: designing a screen and then building it, turning a client’s needs into user stories, or presenting research to a mixed audience. I studied Computer Engineering at Sharif University of Technology.',
+    'I care about the small things: a clear screen, tidy code, a good conversation with the people I work with. I’m curious, I ask a lot of questions, and I’m happiest when something I helped build makes someone’s day a little easier.',
   ],
-  /** One line about art, linking to the Portfolio page. */
+  /** A paragraph about life away from the screen, linking to the Portfolio page. */
   art: {
-    text: 'I also love making art by hand: relief panels, Persian calligraphy and dotwork drawings.',
+    text: 'Away from the screen, you’ll find me lost in my latest DIY project, on a snowboard, at a board game table, learning Deutsch articles or watching a movie I’ll soon insist you have to see.',
     link: 'See my art portfolio',
     href: '/portfolio/',
   },

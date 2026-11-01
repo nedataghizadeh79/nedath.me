@@ -30,6 +30,9 @@ const spoken = `${intro.lead} ${resting.replace(/\.$/, '')}, ${rewrites.map((w) 
     </p>
 
     <div class="story">
+      <p class="greeting">
+        {intro.greeting.before} <strong>{intro.greeting.name}</strong> <small>{intro.greeting.family}</small>{intro.greeting.after}
+      </p>
       {intro.story.map((para) => <p>{para}</p>)}
       <p class="art">{intro.art.text} <a href={intro.art.href}>{intro.art.link} →</a></p>
       <div class="actions">
@@ -59,7 +62,10 @@ const spoken = `${intro.lead} ${resting.replace(/\.$/, '')}, ${rewrites.map((w) 
       </p>
       <div class="open-to">
         <p class="note">open to</p>
-        <p class="role">{lookingFor.roles} in {lookingFor.fields}</p>
+        <p class="role">{lookingFor.roles}</p>
+        <ul role="list" class="fields">
+          {lookingFor.fields.map((f) => <li><strong>{f.name}</strong><span>{f.detail}</span></li>)}
+        </ul>
         <ul role="list" class="places">
           {lookingFor.places.map((place) => <li>{place}</li>)}
         </ul>
@@ -180,6 +186,9 @@ const spoken = `${intro.lead} ${resting.replace(/\.$/, '')}, ${rewrites.map((w) 
     line-height: 1.6;
     max-width: 60ch;
   }
+  /* The first name stands out; the long family name stays small. */
+  .greeting strong { font-family: var(--f-voice); font-size: 1.7em; font-weight: 700; line-height: 1; letter-spacing: -0.02em; }
+  .greeting small { font-size: 0.72em; color: var(--quiet); }
   /* The art line gets its own small block, set apart by a rule. */
   .art { font-family: var(--f-voice); font-style: italic; margin-top: var(--space-3); padding-top: var(--space-5); border-top: 1px solid var(--rule); }
   .art a { font-style: normal; font-family: var(--f-hand); font-size: 1.45em; white-space: nowrap; }
@@ -211,6 +220,11 @@ const spoken = `${intro.lead} ${resting.replace(/\.$/, '')}, ${rewrites.map((w) 
   }
   .open-to .note { font-size: 1.6rem; }
   .open-to .role { font-family: var(--f-voice); font-size: var(--t-lg); line-height: 1.25; }
+  .fields { display: grid; gap: var(--space-3); margin-block: var(--space-2); }
+  .fields li { position: relative; display: grid; padding-left: 1.2rem; }
+  .fields li::before { content: ''; position: absolute; left: 0.15rem; top: 0.68em; width: 5px; height: 5px; border-radius: 50%; background: var(--pencil); }
+  .fields strong { font-weight: 600; }
+  .fields span { font-size: var(--t-sm); color: var(--quiet); }
   .places { display: flex; flex-wrap: wrap; gap: var(--space-2); }
   .places li { font-family: var(--f-mono); font-size: var(--t-xs); padding: 0.2em 0.7em; border: 1px solid var(--rule); border-radius: 999px; }
   .grad { font-size: var(--t-sm); color: var(--quiet); }
