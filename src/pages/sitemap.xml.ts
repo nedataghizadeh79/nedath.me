@@ -8,6 +8,7 @@ const paths = [
   ...caseStudies.map((p) => `/work/${p.slug}/`),
   '/about/',
   '/cv/',
+  '/references/',
   '/portfolio/',
   '/album/',
   '/colophon/',

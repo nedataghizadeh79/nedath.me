@@ -1,0 +1,10 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import ReferenceLetters from '../components/ReferenceLetters.astro';
+---
+
+<Base title="Work references" crumbs={[{ name: 'Work references', path: '/references/' }]} description="Signed work references for Neda Taghizade Serajeh from ZB MED and Serity, available to download as PDF.">
+  <PageHeader label="References" title="Work references" lead="What my employers wrote about my work. Both letters are signed and available as PDF." />
+  <ReferenceLetters />
+</Base>

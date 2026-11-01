@@ -171,8 +171,6 @@ export interface Reference {
   quoteNote?: string;
   /** Path of the PDF in public/. */
   href: string;
-  /** Shown next to the download link when part of the letter is covered. */
-  redacted?: string;
 }
 
 /** Reference letters, newest first. */

@@ -7,14 +7,6 @@ import { statSync } from 'node:fs';
 import { join } from 'node:path';
 import { references } from '../data/profile';
 
-interface Props {
-  /** Heading level, to keep the page outline correct. */
-  level?: 'h2' | 'h3';
-}
-
-const { level = 'h2' } = Astro.props;
-const Heading = level;
-
 /** File size of a PDF in public/, e.g. "820 KB" or "3.4 MB". */
 function size(href: string) {
   const bytes = statSync(join(process.cwd(), 'public', href)).size;
@@ -22,14 +14,12 @@ function size(href: string) {
 }
 ---
 
-<section class="refs" aria-labelledby="references">
-  <Heading id="references" class="refs-title">Reference letters</Heading>
-  <p class="refs-lead">What my employers wrote about my work. Both letters are signed and available as PDF.</p>
+<section aria-label="Reference letters">
   <ol role="list" class="letters">
     {references.map((r, i) => (
       <li class="letter" style={`--tilt: ${i % 2 ? 0.8 : -0.8}deg`}>
         <p class="label">{r.date} · {r.language}</p>
-        <h3 class="org">{r.org}</h3>
+        <h2 class="org">{r.org}</h2>
         <p class="kind">{r.title}{r.originalTitle && <> (<span lang="de">{r.originalTitle}</span>)</>}</p>
         <blockquote>
           <p>“{r.quote}”</p>
@@ -39,17 +29,13 @@ function size(href: string) {
         <a class="button button--primary" href={r.href} download>
           Download PDF <span class="size">({size(r.href)})</span>
         </a>
-        {r.redacted && <p class="redacted">{r.redacted}</p>}
       </li>
     ))}
   </ol>
 </section>
 
 <style>
-  .refs { display: grid; gap: var(--space-4); }
-  .refs-title { font-size: var(--t-xl); }
-  .refs-lead { color: var(--quiet); max-width: var(--measure); }
-  .letters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-7); margin-top: var(--space-4); }
+  .letters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-7); }
   /* Each letter looks like a sheet of paper on the desk. */
   .letter {
     display: grid;
@@ -72,7 +58,6 @@ function size(href: string) {
   .letter .button { margin-top: var(--space-2); background: #15171b; border-color: #15171b; color: #fdfdfb; }
   .letter .button:hover { background: #2b50d8; border-color: #2b50d8; }
   .size { font-weight: 400; opacity: 0.85; }
-  .redacted { font-size: var(--t-xs); color: #5b6168; }
   @media (max-width: 52rem) {
     .letters { grid-template-columns: minmax(0, 1fr); gap: var(--space-6); }
   }
