@@ -78,7 +78,7 @@ export const intro = {
   /** Handwritten margin note beside the statement. */
   note: 'designs it, builds it, explains it',
   proofs: [
-    '33 merged pull requests in terminology-service-suite, an open-source widget library with 11k+ npm downloads a year',
+    '34 merged pull requests in terminology-service-suite, an open-source widget library with almost 12k npm downloads a year',
     'Migrated Digikala’s Seller Center pages from Twig to reusable React and TypeScript components',
     'Designed the DALL-E artist-commission platform in Figma, then built it in React with my colleagues',
     'Turned client requirements into user stories for ServiceNow projects at Serity, and became a ServiceNow Certified System Administrator',

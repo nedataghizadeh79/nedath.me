@@ -67,7 +67,7 @@ export const projects: Project[] = [
     featured: 1,
     sources: [
       {
-        label: 'GitHub · 33 merged PRs',
+        label: 'GitHub · 34 merged PRs',
         href: `${tssRepo}/pulls?q=is:pr+is:merged+author:nedataghizadeh79`,
         note: 'github.com: the list of my merged pull requests in the library',
       },
@@ -79,13 +79,13 @@ export const projects: Project[] = [
       {
         label: 'npm',
         href: 'https://www.npmjs.com/package/@ts4nfdi/terminology-service-suite',
-        note: 'npmjs.com: the published package, about 11,000 downloads a year',
+        note: 'npmjs.com: the published package, about 12,000 downloads a year',
       },
     ],
     caseStudy: {
       context: [
         'The Terminology Service Suite (TS4NFDI) is an open-source library of interactive widgets. Research apps use it to search ontologies, show terms and their metadata, and link related terms, without writing that interface themselves.',
-        'I joined the team at ZB MED in December 2025 as a front-end developer. The package had about 11,400 npm downloads between October 2025 and October 2026.',
+        'I joined the team at ZB MED in December 2025 as a front-end developer. The package had about 11,900 npm downloads between November 2025 and November 2026.',
       ],
       myPart: [
         'Built the terminology-mapping widgets from the first version to the full feature set: both mapping directions, filters and detail views.',
@@ -125,7 +125,7 @@ export const projects: Project[] = [
         },
       ],
       outcome: [
-        '33 pull requests merged into the main branch between April and October 2026.',
+        '34 pull requests merged between April and November 2026, 15 of them straight into the main branch.',
         'The mapping and entity-list widgets are part of the published package and documented in its public Storybook.',
       ],
     },
