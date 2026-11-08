@@ -213,7 +213,7 @@ export const certificates = [
 export const languages = [
   { name: 'Persian', level: 'Native' },
   { name: 'English', level: 'C1 (IELTS 7.5)' },
-  { name: 'German', level: 'B1 (self-assessed)' },
+  { name: 'German', level: 'B1, actively improving' },
 ];
 
 /** One short line about life outside work, shown at the end of About. */
