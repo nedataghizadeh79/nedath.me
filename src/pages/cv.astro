@@ -1,16 +1,15 @@
 ---
 /**
- * The CV page shows the real CV: each page of the PDF as a sheet of paper on the desk.
- * The page images are rendered from public/ with `pdftoppm -r 220 -png`; re-render them when the PDF changes.
+ * The CV page shows the real CV as one long sheet of paper on the desk.
+ * The image is the PDF in public/ rendered with `pdftoppm -r 220 -png`, with both pages
+ * joined into one and the empty white at the page break and the end cut away.
+ * Make it again when the PDF changes.
  */
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import PageHeader from '../components/PageHeader.astro';
 import { cvFile, person } from '../data/site';
-import page1 from '../assets/cv/page-1.png';
-import page2 from '../assets/cv/page-2.png';
-
-const pages = [page1, page2];
+import sheet from '../assets/cv/cv.png';
 ---
 
 <Base title="CV" crumbs={[{ name: 'CV', path: '/cv/' }]} description="CV of Neda Taghizade Serajeh: front-end developer (React, TypeScript), UI/UX designer and ServiceNow Certified System Administrator, M.Sc. Computer Science, University of Bonn.">
@@ -21,28 +20,22 @@ const pages = [page1, page2];
     </div>
   </PageHeader>
 
-  <ol role="list" class="sheets">
-    {pages.map((src, i) => (
-      <li>
-        <a href={cvFile.href} target="_blank" rel="noopener" aria-label={`Page ${i + 1} of ${pages.length}, open the PDF in a new tab`}>
-          <Image
-            class="sheet"
-            src={src}
-            alt={`Page ${i + 1} of the CV of ${person.name}`}
-            widths={[700, 1000, 1400, 1819]}
-            sizes="(min-width: 56rem) 52rem, 100vw"
-            loading={i === 0 ? 'eager' : 'lazy'}
-          />
-        </a>
-      </li>
-    ))}
-  </ol>
+  <a class="sheets" href={cvFile.href} target="_blank" rel="noopener" aria-label="The CV, open the PDF in a new tab">
+    <Image
+      class="sheet"
+      src={sheet}
+      alt={`The CV of ${person.name}`}
+      widths={[700, 1000, 1400, 1819]}
+      sizes="(min-width: 56rem) 52rem, 100vw"
+      loading="eager"
+    />
+  </a>
 </Base>
 
 <style>
   .actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
-  .sheets { display: grid; gap: var(--space-7); max-width: 52rem; margin-inline: auto; padding-bottom: var(--space-8); }
-  /* Each page lies on the desk like a printed sheet. */
+  .sheets { display: block; max-width: 52rem; margin-inline: auto; margin-bottom: calc(2 * var(--space-8)); cursor: zoom-in; }
+  /* The CV lies on the desk like one printed sheet. */
   .sheets :global(.sheet) {
     display: block;
     width: 100%;
@@ -50,5 +43,4 @@ const pages = [page1, page2];
     background: #fff;
     box-shadow: 0 1px 2px rgb(0 0 0 / 0.08), 0 18px 40px -16px rgb(0 0 0 / 0.3);
   }
-  .sheets a { display: block; cursor: zoom-in; }
 </style>
