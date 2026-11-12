@@ -198,13 +198,6 @@ export const references: Reference[] = [
   },
 ];
 
-/** Skills exactly as grouped on the CV. */
-export const cvSkills = [
-  { group: 'Languages', items: 'TypeScript, JavaScript, HTML, CSS, Python' },
-  { group: 'Front-end', items: 'React, Elastic UI, Storybook, Vitest, Figma' },
-  { group: 'Other', items: 'Git, REST APIs, FastAPI, ServiceNow' },
-];
-
 export const certificates = [
   { name: 'ServiceNow Certified System Administrator', issuer: 'ServiceNow', date: 'Apr 2025' },
   { name: 'IELTS Academic 7.5 (C1)', issuer: 'IELTS', date: 'Feb 2024' },
